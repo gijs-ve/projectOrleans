@@ -1,7 +1,8 @@
-type GameState =
+export type GameState =
     | { state: 'Pregame' }
     | { state: 'Preparing' }
     | { state: 'InGame'; currentPlayer: number };
 
-type Player = { name: string; id: string };
-type Room = { name: string; id: string };
+export type Player = { name: string; id: string };
+export type TurnTable = number[];
+export type Room = { name: string; id: string; players: Player[] };
