@@ -1,12 +1,13 @@
 import React from 'react';
-import { useEffect, useReducer } from 'react';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import io, { Socket } from 'socket.io-client';
 import {
     Game,
-    FilledSquare,
     ServerToClientEvents,
     ClientToServerEvents,
 } from '../../types/types';
+import { selectState } from '../src/store/gameState/selectors';
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     process.env.REACT_APP_SERVER_URL || 'http://localhost:4000',
     {
@@ -15,48 +16,9 @@ const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     },
 );
 
-type Action =
-    | { type: 'SET_CONNECTED' }
-    | { type: 'SET_ERROR'; error: string }
-    | { type: 'IX_RECEIVED'; ix: number }
-    | { type: 'GAME_RECEIVED'; game: Game }
-    | { type: 'SQUARE_RECEIVED'; square: FilledSquare };
-
-type State = {
-    connected: boolean;
-    error: string | null;
-    playerIx: number | null;
-    game: Game | null;
-};
-
-const initialState: State = {
-    connected: false,
-    error: null,
-    playerIx: null,
-    game: null,
-};
-
-const gameReducer = (state: State, action: Action) => {
-    console.log(action);
-    const { type } = action;
-    switch (type) {
-        case 'SET_CONNECTED':
-            return { ...state, connected: true };
-        case 'SET_ERROR':
-            return { ...state, error: action.error };
-        case 'GAME_RECEIVED':
-            return { ...state, game: action.game };
-        case 'IX_RECEIVED':
-            return { ...state, playerIx: action.ix };
-        case 'IX_RECEIVED':
-            return { ...state, playerIx: action.ix };
-        default:
-            return state;
-    }
-};
-
 const Game = ({ id }: { id: string }) => {
-    const [state, dispatch] = useReducer(gameReducer, initialState);
+    const dispatch = useDispatch();
+    const state = useSelector(selectState());
 
     useEffect(() => {
         socket.connect();
@@ -73,40 +35,41 @@ const Game = ({ id }: { id: string }) => {
 
     // if (!state.game || state.playerIx === null || !state.error)
     //   return <p>Connection error: {state.error}</p>;
-    if (!state.game || state.playerIx === null) return <p>Connecting..</p>;
-
-    const { game, playerIx, error, connected } = state;
+    if (!state || state.playerIx === null) return <p>Connecting..</p>;
 
     return (
         <div>
             <p>
-                Game {id} {connected ? 'Connected!' : 'Disconnected!'}
+                Game {id} {state.connected ? 'Connected!' : 'Disconnected!'}
             </p>
-            {error && <p>{error}</p>}
-            <p>Your id: {playerIx}</p>
-            <p>Players: {game.players.length}</p>
+            {state.error && <p>{state.error}</p>}
+            <p>Your id: {state.playerIx}</p>
+            <p>Players: {state.game && state.game.players.length}</p>
             <p>
                 Now Playing:{' '}
-                {game.state.phase === 'Pregame' ? 'Pregame' : 'not started'}
+                {state.game && state.game.state.phase === 'Pregame'
+                    ? 'Pregame'
+                    : 'not started'}
             </p>
 
-            {game.state.phase === 'Preparing' && (
+            {state.game && state.game.state.phase === 'Preparing' && (
                 <button onClick={() => socket.emit('start', id)}>Start!</button>
             )}
-            {game.state.phase === 'InGame' && (
+            {state.game && state.game.state.phase === 'InGame' && (
                 <button onClick={() => socket.emit('roll', id)}>Roll!</button>
             )}
 
-            {state.game.players.map(
-                (player, i) =>
-                    i !== playerIx && (
-                        <div>
-                            <span>
-                                <h4>Player {i}</h4>
-                            </span>
-                        </div>
-                    ),
-            )}
+            {state.game &&
+                state.game.players.map(
+                    (player, i) =>
+                        i !== state.playerIx && (
+                            <div>
+                                <span>
+                                    <h4>Player {i}</h4>
+                                </span>
+                            </div>
+                        ),
+                )}
         </div>
     );
 };

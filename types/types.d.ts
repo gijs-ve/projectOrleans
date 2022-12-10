@@ -12,9 +12,9 @@ export type Player = { name: string; id: string; playerId: PlayerId };
 export type Arena = null | {
     name: string;
     round: number;
-    grid: FilledSquare[];
+    grid: Square[];
 };
-export type FilledSquare = { x: number; y: number; playerId: PlayerId | null };
+export type Square = { x: number; y: number; playerId: PlayerId | null };
 
 export type Game = {
     id: string;
@@ -35,3 +35,11 @@ interface ClientToServerEvents {
     roll: (gameId: string) => void;
     makeBid: (gameId: string) => void;
 }
+
+//Client related
+export type State = {
+    connected: boolean;
+    error: string | null;
+    playerIx: number | null;
+    game: Game | null;
+};
