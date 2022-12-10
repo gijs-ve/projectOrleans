@@ -1,24 +1,21 @@
+//Gamestates
 export type GameState =
     | { phase: 'Pregame' }
     | { phase: 'Preparing' }
-    | { phase: 'InGame'; currentPlayer: number };
+    | { phase: 'InGame' };
 
+//Players
 type PlayerId = number;
 export type Player = { name: string; id: string; playerId: PlayerId };
-export type TurnTable = number[];
 
-type X = number[];
-type Y = X[];
-export type grid = Y;
-
-export type FilledSquare = { x: number; y: number; playerId: PlayerId };
-export type Room = {
+//Room
+export type Room = null | {
     name: string;
     id: string;
     players: Player[];
-    grid: grid;
-    filledSquares: FilledSquare[];
+    grid: FilledSquare[];
 };
+export type FilledSquare = { x: number; y: number; playerId: PlayerId | null };
 
 export type Game = {
     id: string;
