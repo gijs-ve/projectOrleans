@@ -9,10 +9,9 @@ type PlayerId = number;
 export type Player = { name: string; id: string; playerId: PlayerId };
 
 //Room
-export type Room = null | {
+export type Arena = null | {
     name: string;
-    id: string;
-    players: Player[];
+    round: number;
     grid: FilledSquare[];
 };
 export type FilledSquare = { x: number; y: number; playerId: PlayerId | null };
@@ -21,6 +20,7 @@ export type Game = {
     id: string;
     players: Player[];
     state: GameState;
+    arena: Arena;
 };
 
 interface ServerToClientEvents {

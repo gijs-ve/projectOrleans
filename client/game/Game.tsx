@@ -3,6 +3,7 @@ import { useEffect, useReducer } from 'react';
 import io, { Socket } from 'socket.io-client';
 import {
     Game,
+    FilledSquare,
     ServerToClientEvents,
     ClientToServerEvents,
 } from '../../types/types';
@@ -18,7 +19,8 @@ type Action =
     | { type: 'SET_CONNECTED' }
     | { type: 'SET_ERROR'; error: string }
     | { type: 'IX_RECEIVED'; ix: number }
-    | { type: 'GAME_RECEIVED'; game: Game };
+    | { type: 'GAME_RECEIVED'; game: Game }
+    | { type: 'SQUARE_RECEIVED'; square: FilledSquare };
 
 type State = {
     connected: boolean;
@@ -44,6 +46,8 @@ const gameReducer = (state: State, action: Action) => {
             return { ...state, error: action.error };
         case 'GAME_RECEIVED':
             return { ...state, game: action.game };
+        case 'IX_RECEIVED':
+            return { ...state, playerIx: action.ix };
         case 'IX_RECEIVED':
             return { ...state, playerIx: action.ix };
         default:
