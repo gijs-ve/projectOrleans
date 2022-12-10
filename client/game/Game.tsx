@@ -6,7 +6,6 @@ import {
     ServerToClientEvents,
     ClientToServerEvents,
 } from '../../types/types';
-console.log(process.env);
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
     process.env.REACT_APP_SERVER_URL || 'http://localhost:4000',
     {

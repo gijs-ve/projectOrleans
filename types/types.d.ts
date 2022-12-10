@@ -3,9 +3,22 @@ export type GameState =
     | { phase: 'Preparing' }
     | { phase: 'InGame'; currentPlayer: number };
 
-export type Player = { name: string; id: string };
+type PlayerId = number;
+export type Player = { name: string; id: string; playerId: PlayerId };
 export type TurnTable = number[];
-export type Room = { name: string; id: string; players: Player[] };
+
+type X = number[];
+type Y = X[];
+export type grid = Y;
+
+export type FilledSquare = { x: number; y: number; playerId: PlayerId };
+export type Room = {
+    name: string;
+    id: string;
+    players: Player[];
+    grid: grid;
+    filledSquares: FilledSquare[];
+};
 
 export type Game = {
     id: string;
