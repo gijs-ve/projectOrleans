@@ -1,3 +1,4 @@
+////Client & server shared types////
 //Gamestates
 export type GamePhase = 'Pregame' | 'Preparing' | 'InGame';
 
@@ -48,16 +49,33 @@ export type Data = {
     room?: rooMData;
 };
 
-//Client related
+////End Client & server shared types////
+
+////Client related types////
 export type State = {
     connected: boolean;
     error: string | null;
     playerIx: number | null;
     game: Game | null;
 };
+export type RawState = {
+    gameState: {
+        connected: boolean;
+        error: string | null;
+        playerIx: number | null;
+        game: Game | null;
+    };
+};
 
-//Server related
+//Props
+export type GameProp = {
+    game: Game;
+};
+////End client related types////
+
+//Server related types////
 export type Rooms = Game[] | [];
 interface SocketData {
     playerIx: number;
 }
+////End Server related types////
