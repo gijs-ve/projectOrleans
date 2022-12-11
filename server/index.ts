@@ -30,11 +30,12 @@ let rooms: Rooms = [];
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
     socket.on('createRoom', (data: Data) => {
-        const { name } = data;
+        const { roomName } = data;
         console.log(`${socket.id} created a room`);
-        const { newRooms, newRoom } = createRoom(rooms, name, socket.id);
+        const { newRooms, newRoom } = createRoom(rooms, roomName, socket.id);
         rooms = newRooms;
         const sendData: Data = { room: newRoom };
+        console.log(sendData);
         socket.emit('sendRoom', sendData);
     });
     socket.on('disconnect', (reason: string) => {

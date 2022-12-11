@@ -37,10 +37,10 @@ interface ClientToServerEvents {
 }
 
 //socketData
-type nameData = string;
+type roomNameData = string;
 type roomData = game;
 export type Data = {
-    name?: nameData;
+    roomName?: roomNameData;
     room?: rooMData;
 };
 

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
-import { StartButton } from './components';
+import { CreateRoomButton } from './components';
 
 function App() {
     const API_URL = process.env.REACT_APP_SERVER_URL || 'http://localhost:4000';
@@ -10,7 +10,7 @@ function App() {
 
     return (
         <>
-            <StartButton />
+            <CreateRoomButton />
             <div>
                 <input
                     value={gameId}
