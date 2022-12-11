@@ -1,5 +1,5 @@
 import { GameProp } from '../../../../types/types';
-import { Lobby } from './Lobby';
+import { Lobby, InGame } from '.';
 
 export function Game(p: GameProp) {
     const { game } = p;
@@ -13,7 +13,7 @@ export function Game(p: GameProp) {
     if (game.phase === 'Preparing') {
         return (
             <div>
-                <Game game={game} />
+                <InGame game={game} />
             </div>
         );
     }

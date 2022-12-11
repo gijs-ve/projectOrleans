@@ -85,6 +85,7 @@ io.on('connect', (socket: any) => {
             const { startedRooms, startedRoom } = startRoom(rooms, roomId);
             const { newRooms, newRoom } = fillArena(startedRooms, startedRoom);
             rooms = newRooms;
+            console.log(newRoom.players);
             const sendData = { room: newRoom };
             emitToRoom(rooms, newRoom.id, sendData, io);
         } catch (error) {

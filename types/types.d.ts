@@ -15,7 +15,7 @@ export type Player = {
 type Players = Player[];
 
 //Arena
-export type Arena = null | Square[];
+export type Arena = Square[] | [];
 export type Square = { x: number; y: number; playerId?: PlayerId };
 
 //Game and room related
@@ -77,11 +77,21 @@ export type Action =
     | { type: 'SET_ERROR'; error: string }
     | { type: 'IX_RECEIVED'; ix: number }
     | { type: 'GAME_RECEIVED'; game: Game }
+    | { type: 'PHASE_CHANGE'; phase: GamePhase }
+    | { type: 'ARENA_RECEIVED'; arena: Game | any }
     | { type: 'SQUARE_RECEIVED'; square: Square };
 
 //Props
 export type GameProp = {
     game: Game;
+    className?: string;
+};
+
+export type CanvasProp = {
+    game: Game;
+    className?: string;
+    height: number;
+    width: number;
 };
 export type NameProp = {
     name: string;

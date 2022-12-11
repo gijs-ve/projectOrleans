@@ -3,6 +3,7 @@ const emitToRoom = (rooms: Rooms, roomId: string, data: Data, io) => {
     rooms.map((i: Room) => {
         if (i.id === roomId) {
             i.players.map((i) => {
+                console.log(data);
                 io.to(i.id).emit('sendRoom', data);
             });
         }
