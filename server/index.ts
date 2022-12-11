@@ -20,7 +20,13 @@ const server = http.createServer(app);
 const PORT = 4000;
 
 //Functions
-import { createRoom, emitToRoom, joinRoom } from './roomSystem';
+import {
+    createRoom,
+    emitToRoom,
+    joinRoom,
+    startRoom,
+    socketIdIsHost,
+} from './roomSystem';
 
 //Socket setup
 const io = new Server(server);
@@ -65,6 +71,20 @@ io.on('connect', (socket: any) => {
             // const sendData: Data = { room: newRoom };
 
             // socket.emit('sendRoom', sendData);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+    socket.on('startRoom', (data: Data) => {
+        try {
+            const { roomId } = data;
+            if (!socketIdIsHost(rooms, roomId, socket.id)) return;
+            console.log(`User with ID ${socket.id} started room ${roomId}`);
+            const { newRooms, newRoom } = startRoom(rooms, roomId);
+            rooms = newRooms;
+            const sendData = { room: newRoom };
+            emitToRoom(rooms, newRoom.id, sendData, io);
         } catch (error) {
             console.log(error);
         }

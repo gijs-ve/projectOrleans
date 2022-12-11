@@ -15,6 +15,8 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
         ],
         phase: 'PreGame',
         arena: null,
+        timer: null,
+        round: 0,
     };
     return { newRooms: [...rooms, room], newRoom: room };
 };

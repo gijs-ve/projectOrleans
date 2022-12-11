@@ -10,6 +10,13 @@ export function Game(p: GameProp) {
             </div>
         );
     }
+    if (game.phase === 'Preparing') {
+        return (
+            <div>
+                <Game game={game} />
+            </div>
+        );
+    }
 
     return <></>;
 }

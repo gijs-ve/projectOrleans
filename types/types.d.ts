@@ -28,6 +28,8 @@ export type Game = {
     players: Players;
     phase: GamePhase;
     arena: Arena;
+    round: number;
+    timer: number | null;
 };
 export type Room = Game;
 
@@ -84,6 +86,11 @@ export type GameProp = {
 };
 export type NameProp = {
     name: string;
+};
+
+export type RoomProp = {
+    roomId?: string;
+    hostId?: string;
 };
 
 export type PlayersProp = {
