@@ -5,7 +5,7 @@ export type GameState =
     | { phase: 'InGame' };
 
 //Players
-type PlayerId = number;
+type PlayerId = number | null;
 export type Player = { name: string; id: string; playerId: PlayerId };
 
 //Room
@@ -43,3 +43,9 @@ export type State = {
     playerIx: number | null;
     game: Game | null;
 };
+
+//Server related
+export type Rooms = Game[] | [];
+interface SocketData {
+    playerIx: number;
+}
