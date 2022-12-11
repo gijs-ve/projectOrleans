@@ -20,7 +20,7 @@ const server = http.createServer(app);
 const PORT = 4000;
 
 //Functions
-import { createRoom } from './roomSystem/createRoom';
+import { createRoom, emitToRoom, joinRoom } from './roomSystem';
 
 //Socket setup
 const io = new Server(server);
@@ -30,14 +30,46 @@ let rooms: Rooms = [];
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
     socket.on('createRoom', (data: Data) => {
-        const { roomName } = data;
-        console.log(`${socket.id} created a room`);
-        const { newRooms, newRoom } = createRoom(rooms, roomName, socket.id);
-        rooms = newRooms;
-        const sendData: Data = { room: newRoom };
-        console.log(sendData);
-        socket.emit('sendRoom', sendData);
+        try {
+            const { playerName } = data;
+            console.log(`User ${playerName} ${socket.id} created a room`);
+            const { newRooms, newRoom } = createRoom(
+                rooms,
+                playerName,
+                socket.id,
+            );
+            rooms = newRooms;
+            const sendData: Data = { room: newRoom };
+
+            socket.emit('sendRoom', sendData);
+        } catch (error) {
+            console.log(error);
+        }
     });
+
+    socket.on('joinRoom', (data: Data) => {
+        try {
+            const { roomId, playerName } = data;
+            console.log(
+                `User ${playerName} ${socket.id} joined room ${roomId}`,
+            );
+            const { newRooms, newRoom } = joinRoom(
+                rooms,
+                roomId,
+                playerName,
+                socket.id,
+            );
+            rooms = newRooms;
+            const sendData = { room: newRoom };
+            emitToRoom(rooms, newRoom.id, sendData, io);
+            // const sendData: Data = { room: newRoom };
+
+            // socket.emit('sendRoom', sendData);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
     socket.on('disconnect', (reason: string) => {
         console.log(`User ${socket.id} disconnected (${reason})`);
     });

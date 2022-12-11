@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Game, Square, State } from '../../../../types/types';
-
-type Action =
-    | { type: 'SET_CONNECTED' }
-    | { type: 'SET_ERROR'; error: string }
-    | { type: 'IX_RECEIVED'; ix: number }
-    | { type: 'GAME_RECEIVED'; game: Game }
-    | { type: 'SQUARE_RECEIVED'; square: Square };
+import { Game, Square, State, Action } from '../../../../types/types';
 
 const initialState: State = {
     connected: false,

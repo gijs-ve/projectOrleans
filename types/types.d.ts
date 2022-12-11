@@ -1,6 +1,6 @@
 ////Client & server shared types////
 //Gamestates
-export type GamePhase = 'Pregame' | 'Preparing' | 'InGame';
+export type GamePhase = 'PreGame' | 'Preparing' | 'InGame';
 
 //Players
 type PlayerId = number | null;
@@ -11,6 +11,7 @@ export type Player = {
     direction: number | null;
     isSpectator: boolean;
 };
+type Players = Player[];
 
 //Arena
 export type Arena = null | {
@@ -23,10 +24,12 @@ export type Square = { x: number; y: number; playerId: PlayerId | null };
 //Game and room related
 export type Game = {
     id: string;
-    players: Player[];
+    hostId: string;
+    players: Players;
     phase: GamePhase;
     arena: Arena;
 };
+export type Room = Game;
 
 interface ServerToClientEvents {
     error: (error: string) => void;
@@ -42,11 +45,11 @@ interface ClientToServerEvents {
 }
 
 //socketData
-type roomNameData = string;
-type roomData = game;
 export type Data = {
-    roomName?: roomNameData;
-    room?: rooMData;
+    newRoom?: Room;
+    playerName?: string;
+    roomId?: string;
+    room?: Game;
 };
 
 ////End Client & server shared types////
@@ -67,9 +70,20 @@ export type RawState = {
     };
 };
 
+//Actions
+export type Action =
+    | { type: 'SET_CONNECTED' }
+    | { type: 'SET_ERROR'; error: string }
+    | { type: 'IX_RECEIVED'; ix: number }
+    | { type: 'GAME_RECEIVED'; game: Game }
+    | { type: 'SQUARE_RECEIVED'; square: Square };
+
 //Props
 export type GameProp = {
     game: Game;
+};
+export type NameProp = {
+    name: string;
 };
 ////End client related types////
 

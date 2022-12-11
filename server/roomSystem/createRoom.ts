@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require('uuid');
 export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
     const room: Game = {
         id: uuidv4().split('-')[0],
+        hostId,
         players: [
             {
                 name: hostName,
@@ -12,7 +13,7 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
                 isSpectator: false,
             },
         ],
-        phase: 'Pregame',
+        phase: 'PreGame',
         arena: null,
     };
     return { newRooms: [...rooms, room], newRoom: room };
