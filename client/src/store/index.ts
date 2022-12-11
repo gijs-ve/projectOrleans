@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { findRenderedComponentWithType } from 'react-dom/test-utils';
 
 import gameStateReducer from './gameState/slice';
 
@@ -7,6 +8,8 @@ const store = configureStore({
         gameState: gameStateReducer,
     },
 });
-export default store;
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export * from './gameState';
+export default store;

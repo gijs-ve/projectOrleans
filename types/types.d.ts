@@ -1,8 +1,5 @@
 //Gamestates
-export type GameState =
-    | { phase: 'Pregame' }
-    | { phase: 'Preparing' }
-    | { phase: 'InGame' };
+export type GamePhase = 'Pregame' | 'Preparing' | 'InGame';
 
 //Players
 type PlayerId = number | null;
@@ -19,7 +16,7 @@ export type Square = { x: number; y: number; playerId: PlayerId | null };
 export type Game = {
     id: string;
     players: Player[];
-    state: GameState;
+    phase: GamePhase;
     arena: Arena;
 };
 

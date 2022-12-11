@@ -47,15 +47,15 @@ const Game = ({ id }: { id: string }) => {
             <p>Players: {state.game && state.game.players.length}</p>
             <p>
                 Now Playing:{' '}
-                {state.game && state.game.state.phase === 'Pregame'
+                {state.game && state.game.phase === 'Pregame'
                     ? 'Pregame'
                     : 'not started'}
             </p>
 
-            {state.game && state.game.state.phase === 'Preparing' && (
+            {state.game && state.game.phase === 'Preparing' && (
                 <button onClick={() => socket.emit('start', id)}>Start!</button>
             )}
-            {state.game && state.game.state.phase === 'InGame' && (
+            {state.game && state.game.phase === 'InGame' && (
                 <button onClick={() => socket.emit('roll', id)}>Roll!</button>
             )}
 
