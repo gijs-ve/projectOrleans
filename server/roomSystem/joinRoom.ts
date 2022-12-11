@@ -10,6 +10,7 @@ export const joinRoom = (
         name: playerName,
         id: socketId,
         playerId: null,
+        position: null,
         direction: null,
         isSpectator: false,
     };

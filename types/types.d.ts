@@ -8,18 +8,15 @@ export type Player = {
     name: string;
     id: string;
     playerId: PlayerId;
+    position: Square | null;
     direction: number | null;
     isSpectator: boolean;
 };
 type Players = Player[];
 
 //Arena
-export type Arena = null | {
-    name: string;
-    round: number;
-    grid: Square[];
-};
-export type Square = { x: number; y: number; playerId: PlayerId | null };
+export type Arena = null | Square[];
+export type Square = { x: number; y: number; playerId?: PlayerId };
 
 //Game and room related
 export type Game = {
@@ -28,7 +25,9 @@ export type Game = {
     players: Players;
     phase: GamePhase;
     arena: Arena;
+    size: number;
     round: number;
+    maxRounds: number;
     timer: number | null;
 };
 export type Room = Game;

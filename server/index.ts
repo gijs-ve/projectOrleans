@@ -27,6 +27,7 @@ import {
     startRoom,
     socketIdIsHost,
 } from './roomSystem';
+import { fillArena } from './gameSystem';
 
 //Socket setup
 const io = new Server(server);
@@ -81,7 +82,8 @@ io.on('connect', (socket: any) => {
             const { roomId } = data;
             if (!socketIdIsHost(rooms, roomId, socket.id)) return;
             console.log(`User with ID ${socket.id} started room ${roomId}`);
-            const { newRooms, newRoom } = startRoom(rooms, roomId);
+            const { startedRooms, startedRoom } = startRoom(rooms, roomId);
+            const { newRooms, newRoom } = fillArena(startedRooms, startedRoom);
             rooms = newRooms;
             const sendData = { room: newRoom };
             emitToRoom(rooms, newRoom.id, sendData, io);
