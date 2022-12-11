@@ -20,7 +20,6 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         gameReducer: (state: State, action: PayloadAction<Action>) => {
-            console.log(action);
             const { type } = action.payload;
             switch (type) {
                 case 'SET_CONNECTED':

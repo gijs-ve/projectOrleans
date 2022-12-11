@@ -3,9 +3,15 @@ export type GamePhase = 'Pregame' | 'Preparing' | 'InGame';
 
 //Players
 type PlayerId = number | null;
-export type Player = { name: string; id: string; playerId: PlayerId };
+export type Player = {
+    name: string;
+    id: string;
+    playerId: PlayerId;
+    direction: number | null;
+    isSpectator: boolean;
+};
 
-//Room
+//Arena
 export type Arena = null | {
     name: string;
     round: number;
@@ -13,6 +19,7 @@ export type Arena = null | {
 };
 export type Square = { x: number; y: number; playerId: PlayerId | null };
 
+//Game and room related
 export type Game = {
     id: string;
     players: Player[];
