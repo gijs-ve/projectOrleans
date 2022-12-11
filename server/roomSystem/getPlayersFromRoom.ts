@@ -1,3 +1,5 @@
-import { Room } from "../../types/types"
+import { Room } from '../../types/types';
 
-export const getPlayersFromRoom (room: Room)
+export const getPlayersFromRoom = (room: Room) => {
+    return room.players;
+};

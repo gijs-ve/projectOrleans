@@ -26,8 +26,10 @@ import {
     joinRoom,
     startRoom,
     socketIdIsHost,
+    generateNewRooms,
+    findRoomById,
 } from './roomSystem';
-import { fillArena } from './gameSystem';
+import { fillArena, getStartPositions } from './gameSystem';
 
 //Socket setup
 const io = new Server(server);
@@ -84,9 +86,9 @@ io.on('connect', (socket: any) => {
             console.log(`User with ID ${socket.id} started room ${roomId}`);
             const { startedRooms, startedRoom } = startRoom(rooms, roomId);
             const { newRooms, newRoom } = fillArena(startedRooms, startedRoom);
-            rooms = newRooms;
-            console.log(newRoom.players);
-            const sendData = { room: newRoom };
+            console.log('NEWROOM 89', newRoom);
+            rooms = generateNewRooms(newRooms, getStartPositions(newRoom));
+            const sendData = { room: findRoomById(rooms, roomId) };
             emitToRoom(rooms, newRoom.id, sendData, io);
         } catch (error) {
             console.log(error);
