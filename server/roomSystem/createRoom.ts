@@ -7,5 +7,5 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
         state: { phase: 'Pregame' },
         arena: null,
     };
-    return [...rooms, room];
+    return { newRooms: [...rooms, room], newRoom: room };
 };

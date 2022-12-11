@@ -1,7 +1,13 @@
 import { useContext } from 'react';
 import { SocketContext } from '../../socket/socket';
 
-export const StartButton = () => {
+const StartButton = () => {
     const socket = useContext(SocketContext);
-    return <button></button>;
+    const createRoom = () => {
+        const data = { name: 'Test' };
+        socket.emit('createRoom', data);
+    };
+    return <button onClick={() => createRoom()}>Create game</button>;
 };
+
+export { StartButton };

@@ -36,6 +36,14 @@ interface ClientToServerEvents {
     makeBid: (gameId: string) => void;
 }
 
+//socketData
+type nameData = string;
+type roomData = game;
+export type Data = {
+    name?: nameData;
+    room?: rooMData;
+};
+
 //Client related
 export type State = {
     connected: boolean;
