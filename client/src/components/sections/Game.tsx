@@ -4,7 +4,12 @@ import { Lobby } from './Lobby';
 export function Game(p: GameProp) {
     const { game } = p;
     if (game.phase === 'PreGame') {
-        return <div>Game {game.id}</div>;
+        return (
+            <div>
+                <Lobby game={game} />
+            </div>
+        );
     }
+
     return <></>;
 }

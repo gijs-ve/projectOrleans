@@ -85,6 +85,16 @@ export type GameProp = {
 export type NameProp = {
     name: string;
 };
+
+export type PlayersProp = {
+    hostId?: string;
+    players: Players;
+};
+
+export type PlayerProp = {
+    key?: string;
+    player: Player;
+};
 ////End client related types////
 
 //Server related types////
