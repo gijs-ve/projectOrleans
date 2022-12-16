@@ -7,7 +7,6 @@ export const generateSpawnTable = (
 ) => {
     if (!spawnTable || spawnTable.length === 0) {
         const newSpawnTable = arena.filter((i: Square) => {
-            console.log(i);
             return (
                 i.x >= 2 &&
                 i.y >= 2 &&

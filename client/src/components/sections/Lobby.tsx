@@ -13,7 +13,6 @@ export function Lobby(p: GameProp) {
     useEffect(() => {
         socket.on('sendRoom', (data: Data) => {
             if (!data.room) return;
-            console.log(data.room);
             dispatch(gameReducer({ type: 'GAME_RECEIVED', game: data.room }));
             dispatch(
                 gameReducer({ type: 'PHASE_CHANGE', phase: data.room.phase }),

@@ -4,7 +4,6 @@ import { SocketContext } from '../../socket/socket';
 
 export function Player(p: PlayerProp) {
     const socket = useContext(SocketContext);
-    console.log(socket.id);
     const { player } = p;
     return (
         <div>

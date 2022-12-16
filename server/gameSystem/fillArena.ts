@@ -12,7 +12,6 @@ export const fillArena = (rooms: Rooms, room: Room) => {
             arena.push(square);
         }
     }
-    console.log(arena);
     newRoom.arena = arena;
     const newRooms = generateNewRooms(rooms, newRoom);
     return { newRooms, newRoom };

@@ -4,6 +4,7 @@ import { SocketContext } from '../../socket/socket';
 import { CreateRoomButton } from '../buttons';
 import { Data } from '../../../../types/types';
 import { gameReducer } from '../../store';
+import { Socket } from 'socket.io-client';
 
 export function NoUserSection() {
     const dispatch = useAppDispatch();
@@ -17,7 +18,6 @@ export function NoUserSection() {
     useEffect(() => {
         socket.on('sendRoom', (data: Data) => {
             if (!data.room) return;
-            console.log(data.room);
             dispatch(gameReducer({ type: 'GAME_RECEIVED', game: data.room }));
             dispatch(gameReducer({ type: 'SET_CONNECTED' }));
         });
