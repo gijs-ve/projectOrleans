@@ -26,6 +26,7 @@ const OutputCanvas = (p: CanvasProp) => {
         }
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, width, height);
+
         ctx.stroke();
     };
 
@@ -34,6 +35,7 @@ const OutputCanvas = (p: CanvasProp) => {
         ctx.fillStyle = 'red';
 
         ctx.fillRect(pL, pT, s, s);
+
         ctx.stroke();
     };
 
