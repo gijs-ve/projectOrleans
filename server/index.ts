@@ -24,7 +24,7 @@ import {
     generateNewRooms,
     findRoomById,
 } from './roomSystem';
-import { fillArena, getStartPositions } from './gameSystem';
+import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
 import { onTick } from './gameSystem/onTick';
 
 //Socket setup
@@ -93,6 +93,14 @@ io.on('connect', (socket: any) => {
             rooms = generateNewRooms(newRooms, getStartPositions(newRoom));
             const sendData = { room: findRoomById(rooms, roomId) };
             emitToRoom(rooms, newRoom.id, sendData, io);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+    socket.on('setDirection', (data: Data) => {
+        try {
+            const { roomId, direction } = data;
+            rooms = setPlayerDirection(rooms, roomId, socket.id, direction);
         } catch (error) {
             console.log(error);
         }
