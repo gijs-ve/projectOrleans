@@ -28,6 +28,7 @@ export type Game = {
     size: number;
     round: number;
     maxRounds: number;
+    timelines: number;
     timer: number | null;
 };
 export type Room = Game;

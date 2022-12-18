@@ -19,6 +19,7 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
         timer: null,
         round: 0,
         maxRounds: 0,
+        timelines: 3,
         size: 7,
     };
     return { newRooms: [...rooms, room], newRoom: room };
