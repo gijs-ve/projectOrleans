@@ -4,12 +4,13 @@ export type GamePhase = 'PreGame' | 'Preparing' | 'InGame';
 
 //Players
 type PlayerId = number | null;
+export type Direction = 'Up' | 'Right' | 'Down' | 'Left';
 export type Player = {
     name: string;
     id: string;
     playerId: PlayerId;
     position: Square | null;
-    direction: number | null;
+    direction: Direction | null;
     isSpectator: boolean;
 };
 type Players = Player[];

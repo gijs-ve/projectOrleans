@@ -3,7 +3,7 @@ import { getPlayersFromRoom } from '../roomSystem/getPlayersFromRoom';
 import { Room } from '../../types/types';
 
 export const getStartPositions = (room: Room) => {
-    const players = getPlayersFromRoom(room);
-    calculateNewPositions(room);
-    return room;
+    const newRoom = calculateNewPositions(room);
+    newRoom.phase = 'InGame';
+    return newRoom;
 };
