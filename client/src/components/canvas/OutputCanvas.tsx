@@ -14,7 +14,7 @@ const OutputCanvas = (p: CanvasProp) => {
     let pR = width - nX * s - pL;
     let pB = height - nY * s - pT;
     const draw = (ctx: any) => {
-        ctx.strokeStyle = 'white';
+        ctx.strokeStyle = 'black';
         ctx.beginPath();
         for (var x = pL; x <= width - pR; x += s) {
             ctx.moveTo(x, pT);
@@ -31,12 +31,36 @@ const OutputCanvas = (p: CanvasProp) => {
     };
 
     const drawPlayers = (ctx: any) => {
-        ctx.beginPath();
-        ctx.fillStyle = 'red';
+        game.players.map((i) => {
+            if (!i.position) return;
+            ctx.beginPath();
+            switch (i.playerId) {
+                case 0:
+                    ctx.fillStyle = 'red';
+                    break;
+                case 1:
+                    ctx.fillStyle = 'blue';
+                    break;
+                case 2:
+                    ctx.fillStyle = 'green';
+                    break;
+                case 3:
+                    ctx.fillStyle = 'orange';
+                    break;
+                case 4:
+                    ctx.fillStyle = 'yellow';
+                    break;
+            }
+            ctx.fillRect(
+                pL + pL * (i.position.x - 1),
+                pT + pT * (i.position.y - 1),
+                s,
+                s,
+            );
+            // ctx.fillRect(i.position.x, i.position.y, s, s);
 
-        ctx.fillRect(pL, pT, s, s);
-
-        ctx.stroke();
+            ctx.stroke();
+        });
     };
 
     useEffect(() => {

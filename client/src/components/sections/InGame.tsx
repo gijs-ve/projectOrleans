@@ -9,7 +9,7 @@ export function InGame(p: GameProp) {
         <div className="scale">
             <OutputCanvas
                 game={game}
-                className="gridCanvas"
+                className="items-center"
                 width={1200}
                 height={1200}
             />

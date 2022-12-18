@@ -17,6 +17,13 @@ export function Game(p: GameProp) {
             </div>
         );
     }
+    if (game.phase === 'InGame') {
+        return (
+            <div>
+                <InGame game={game} />
+            </div>
+        );
+    }
 
     return <></>;
 }
