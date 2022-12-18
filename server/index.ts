@@ -1,10 +1,5 @@
 import { Socket } from 'socket.io';
-import {
-    ServerToClientEvents,
-    ClientToServerEvents,
-    Rooms,
-    Data,
-} from '../types/types';
+import { Rooms, Data, Room } from '../types/types';
 
 const corsMiddleWare = require('cors');
 const { Server } = require('socket.io');
@@ -30,11 +25,24 @@ import {
     findRoomById,
 } from './roomSystem';
 import { fillArena, getStartPositions } from './gameSystem';
+import { onTick } from './gameSystem/onTick';
 
 //Socket setup
 const io = new Server(server);
 
 let rooms: Rooms = [];
+const raiseTimer = () => {
+    try {
+        rooms = onTick(rooms);
+        rooms.map((i: Room) => {
+            const sendData: Data = { room: i };
+            emitToRoom(rooms, i.id, sendData, io);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+setInterval(raiseTimer, 500);
 
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
@@ -49,7 +57,6 @@ io.on('connect', (socket: any) => {
             );
             rooms = newRooms;
             const sendData: Data = { room: newRoom };
-
             socket.emit('sendRoom', sendData);
         } catch (error) {
             console.log(error);
@@ -71,9 +78,6 @@ io.on('connect', (socket: any) => {
             rooms = newRooms;
             const sendData = { room: newRoom };
             emitToRoom(rooms, newRoom.id, sendData, io);
-            // const sendData: Data = { room: newRoom };
-
-            // socket.emit('sendRoom', sendData);
         } catch (error) {
             console.log(error);
         }
@@ -86,7 +90,6 @@ io.on('connect', (socket: any) => {
             console.log(`User with ID ${socket.id} started room ${roomId}`);
             const { startedRooms, startedRoom } = startRoom(rooms, roomId);
             const { newRooms, newRoom } = fillArena(startedRooms, startedRoom);
-            console.log('NEWROOM 89', newRoom);
             rooms = generateNewRooms(newRooms, getStartPositions(newRoom));
             const sendData = { room: findRoomById(rooms, roomId) };
             emitToRoom(rooms, newRoom.id, sendData, io);

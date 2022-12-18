@@ -1,6 +1,6 @@
 ////Client & server shared types////
 //Gamestates
-export type GamePhase = 'PreGame' | 'Preparing' | 'InGame';
+export type GamePhase = 'PreGame' | 'Preparing' | 'InGame' | string;
 
 //Players
 type PlayerId = number | null;
@@ -30,6 +30,7 @@ export type Game = {
     round: number;
     maxRounds: number;
     timelines: number;
+    timelineTime: number;
     timer: number | null;
 };
 export type Room = Game;
