@@ -18,7 +18,12 @@ type Players = Player[];
 
 //Arena
 export type Arena = Square[] | [];
-export type Square = { x: number; y: number; playerId?: PlayerId };
+export type Square = {
+    x: number;
+    y: number;
+    playerId?: PlayerId;
+    timeStamp?: number;
+};
 
 //Game and room related
 export type Game = {
