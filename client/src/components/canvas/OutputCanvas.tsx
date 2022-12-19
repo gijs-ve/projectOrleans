@@ -1,9 +1,12 @@
 import { useRef, useEffect } from 'react';
 import { CanvasProp, Square } from '../../../../types/types';
+import { getEdges } from './getEdges';
 
 const OutputCanvas = (p: CanvasProp) => {
     const canvasRef = useRef(null);
+
     const { game, width, height } = p;
+    const edges = getEdges(game.size);
     let s = width / (game.size + 2);
     let nX = Math.floor(width / s) - 2;
     let nY = Math.floor(height / s) - 2;
@@ -86,6 +89,15 @@ const OutputCanvas = (p: CanvasProp) => {
         });
     };
 
+    const drawEdges = (ctx: any) => {
+        edges.map((i: Square) => {
+            ctx.beginPath();
+            ctx.fillStyle = 'gray';
+            ctx.fillRect(pL + pL * (i.x - 1), pT + pT * (i.y - 1), s, s);
+            ctx.stroke();
+        });
+    };
+
     useEffect(() => {
         const canvas: any = canvasRef.current;
         if (!canvas) return;
@@ -93,6 +105,7 @@ const OutputCanvas = (p: CanvasProp) => {
         draw(context);
         drawPlayers(context);
         drawFilledSquares(context);
+        drawEdges(context);
     }, [draw]);
 
     return <canvas ref={canvasRef} {...p} />;
