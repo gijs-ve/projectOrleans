@@ -23,7 +23,7 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
         maxRounds: 0,
         timelines: 3,
         timelineTime: 30,
-        size: 15,
+        size: 25,
     };
     return { newRooms: [...rooms, room], newRoom: room };
 };

@@ -6,8 +6,8 @@ export const squareIsSolid = (
     filledSquares: Arena,
 ): boolean => {
     if (
-        square.x >= roomSize ||
-        square.y >= roomSize ||
+        square.x >= roomSize+1 ||
+        square.y >= roomSize+1 ||
         square.x <= 0 ||
         square.y <= 0
     )
