@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { CanvasProp } from '../../../../types/types';
+import { CanvasProp, Square } from '../../../../types/types';
 
 const OutputCanvas = (p: CanvasProp) => {
     const canvasRef = useRef(null);
@@ -57,8 +57,31 @@ const OutputCanvas = (p: CanvasProp) => {
                 s,
                 s,
             );
-            // ctx.fillRect(i.position.x, i.position.y, s, s);
+            ctx.stroke();
+        });
+    };
 
+    const drawFilledSquares = (ctx: any) => {
+        game.filledSquares.map((i: Square) => {
+            ctx.beginPath();
+            switch (i.playerId) {
+                case 0:
+                    ctx.fillStyle = 'red';
+                    break;
+                case 1:
+                    ctx.fillStyle = 'blue';
+                    break;
+                case 2:
+                    ctx.fillStyle = 'green';
+                    break;
+                case 3:
+                    ctx.fillStyle = 'orange';
+                    break;
+                case 4:
+                    ctx.fillStyle = 'yellow';
+                    break;
+            }
+            ctx.fillRect(pL + pL * (i.x - 1), pT + pT * (i.y - 1), s, s);
             ctx.stroke();
         });
     };
@@ -69,6 +92,7 @@ const OutputCanvas = (p: CanvasProp) => {
         const context = canvas.getContext('2d');
         draw(context);
         drawPlayers(context);
+        drawFilledSquares(context);
     }, [draw]);
 
     return <canvas ref={canvasRef} {...p} />;

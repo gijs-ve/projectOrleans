@@ -12,9 +12,9 @@ export const squareIsSolid = (
         square.y <= 0
     )
         return true;
-    const jsonSquares = filledSquares.map((i: Square) => {
-        return JSON.stringify(i);
+    const stringSquares = filledSquares.map((i: Square) => {
+        return `X${i.x}Y${i.y}`
     });
-    if (jsonSquares.includes(JSON.stringify(square))) return true;
+    if (stringSquares.includes(`X${square.x}Y${square.y}`)) return true;
     return false;
 };
