@@ -11,6 +11,7 @@ export type Player = {
     playerId: PlayerId;
     position: Square | null;
     direction: Direction | null;
+    isAlive: boolean;
     isSpectator: boolean;
 };
 type Players = Player[];
@@ -26,6 +27,7 @@ export type Game = {
     players: Players;
     phase: GamePhase;
     arena: Arena;
+    filledSquares: Arena;
     size: number;
     round: number;
     maxRounds: number;

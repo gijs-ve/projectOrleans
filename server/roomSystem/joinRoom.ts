@@ -12,6 +12,7 @@ export const joinRoom = (
         playerId: null,
         position: null,
         direction: null,
+        isAlive: false,
         isSpectator: false,
     };
     const room = rooms.find((i: Room) => i.id === roomId);

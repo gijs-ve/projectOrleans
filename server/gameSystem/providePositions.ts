@@ -13,6 +13,7 @@ export const providePositions = (spawnTable: Square[], players: Players) => {
             newSpawnTable[Math.floor(Math.random() * newSpawnTable.length)];
         newPlayers[d].playerId = d;
         newPlayers[d].position = spawnPosition;
+        newPlayers[d].isAlive = true
         newPlayers[d].direction = getRandomDirection();
         const surroundingArray = calculateNeighbours(spawnPosition);
         newSpawnTable = newSpawnTable.filter((i: Square) => {
