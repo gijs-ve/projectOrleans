@@ -64,7 +64,7 @@ io.on('connect', (socket: any) => {
             console.log(error);
         }
     });
-
+    //Handles a player attempting to join a room
     socket.on('joinRoom', (data: Data) => {
         try {
             const { roomId, playerName } = data;
@@ -84,7 +84,7 @@ io.on('connect', (socket: any) => {
             console.log(error);
         }
     });
-
+    //Starts a room
     socket.on('startRoom', (data: Data) => {
         try {
             const { roomId } = data;
@@ -99,6 +99,7 @@ io.on('connect', (socket: any) => {
             console.log(error);
         }
     });
+    //Changes direction of a player
     socket.on('setDirection', (data: Data) => {
         try {
             const { roomId, direction } = data;
