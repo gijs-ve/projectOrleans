@@ -15,6 +15,7 @@ export const onTick = (rooms: Rooms): Rooms => {
                 if (i.timer >= 0) {
                     let filledSquares: Arena = i.filledSquares;
                     const newPlayers = i.players.map((j: Player) => {
+                        if (j.isSpectator) return j;
                         if (!j.isAlive) return j;
                         filledSquares = [
                             ...filledSquares,

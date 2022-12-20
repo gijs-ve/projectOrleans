@@ -18,7 +18,6 @@ export function Lobby(p: GameProp) {
             dispatch(
                 gameReducer({ type: 'PHASE_CHANGE', phase: data.room.phase }),
             );
-            // dispatch(gameReducer({ type: 'SET_CONNECTED' }));
         });
         return () => {
             socket.off('sendRoom');
@@ -26,7 +25,7 @@ export function Lobby(p: GameProp) {
     }, []);
     return (
         <div>
-            <h1>ID:{game.id}</h1>
+            <h1>{game.id}</h1>
             <PlayerList players={game.players} hostId={game.hostId} />{' '}
             <StartRoomButton hostId={game.hostId} roomId={game.id} />
             <Settings game={game} />

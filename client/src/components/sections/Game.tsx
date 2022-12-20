@@ -10,14 +10,7 @@ export function Game(p: GameProp) {
             </div>
         );
     }
-    if (game.phase === 'Preparing') {
-        return (
-            <div>
-                <InGame game={game} />
-            </div>
-        );
-    }
-    if (game.phase === 'InGame') {
+    if (game.phase === 'Preparing' || game.phase === 'InGame') {
         return (
             <div>
                 <InGame game={game} />
