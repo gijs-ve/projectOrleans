@@ -12,6 +12,13 @@ export const setPlayerDirection = (
             ...i,
             players: i.players.map((i: Player) => {
                 if (i.id !== socketId) return i;
+                if (
+                    (i.direction === 'Up' && newDirection === 'Down') ||
+                    (i.direction === 'Down' && newDirection === 'Up') ||
+                    (i.direction === 'Left' && newDirection === 'Right') ||
+                    (i.direction === 'Right' && newDirection === 'Left')
+                )
+                    return i;
                 return { ...i, direction: newDirection };
             }),
         };

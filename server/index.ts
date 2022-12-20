@@ -113,8 +113,14 @@ io.on('connect', (socket: any) => {
         try {
             console.log(`User ${socket.id} disconnected (${reason})`);
             const playerRemoved = removePlayerFromRoom(rooms, socket.id);
-            if (!playerRemoved) return;
+            if (!playerRemoved) {
+                console.log(`This user was not active in a single room`);
+                return;
+            }
             const { newRooms, newRoom } = playerRemoved;
+            console.log(
+                `This user has been removed from room with ID ${newRoom.id}`,
+            );
             rooms = newRooms;
             const sendData = { room: newRoom };
             emitToRoom(rooms, newRoom.id, sendData, io);
