@@ -17,7 +17,6 @@ export function InGame(p: GameProp) {
             dispatch(
                 gameReducer({ type: 'PHASE_CHANGE', phase: data.room.phase }),
             );
-            // dispatch(gameReducer({ type: 'SET_CONNECTED' }));
         });
         return () => {
             socket.off('sendRoom');
@@ -25,6 +24,7 @@ export function InGame(p: GameProp) {
     }, []);
     return (
         <div className="scale">
+            <div className="w-1/2"></div>
             <OutputCanvas
                 game={game}
                 className="items-center"
