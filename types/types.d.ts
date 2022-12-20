@@ -62,6 +62,7 @@ export type Data = {
     roomId?: string;
     room?: Game;
     direction?: Direction;
+    settings?: Object;
 };
 
 ////End Client & server shared types////
