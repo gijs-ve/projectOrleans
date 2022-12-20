@@ -1,4 +1,3 @@
-import { Socket } from 'socket.io';
 import { Rooms, Data, Room } from '../types/types';
 
 const corsMiddleWare = require('cors');
@@ -32,6 +31,8 @@ import { onTick } from './gameSystem/onTick';
 const io = new Server(server);
 
 let rooms: Rooms = [];
+
+//Timer to keep track in all rooms
 const raiseTimer = () => {
     try {
         rooms = onTick(rooms);
@@ -108,13 +109,18 @@ io.on('connect', (socket: any) => {
     });
 
     socket.on('disconnect', (reason: string) => {
-        console.log(`User ${socket.id} disconnected (${reason})`);
-        const playerRemoved = removePlayerFromRoom(rooms, socket.id);
-        if (!playerRemoved) return;
-        const { newRooms, newRoom } = playerRemoved;
-        rooms = newRooms;
-        const sendData = { room: newRoom };
-        emitToRoom(rooms, newRoom.id, sendData, io);
+        //NEEDS HOST MIGRATION
+        try {
+            console.log(`User ${socket.id} disconnected (${reason})`);
+            const playerRemoved = removePlayerFromRoom(rooms, socket.id);
+            if (!playerRemoved) return;
+            const { newRooms, newRoom } = playerRemoved;
+            rooms = newRooms;
+            const sendData = { room: newRoom };
+            emitToRoom(rooms, newRoom.id, sendData, io);
+        } catch (error) {
+            console.log(error);
+        }
     });
 });
 
