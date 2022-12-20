@@ -123,6 +123,10 @@ io.on('connect', (socket: any) => {
                 `This user has been removed from room with ID ${newRoom.id}`,
             );
             rooms = newRooms;
+            if (!newRoom) {
+                console.log(`This user was the last user in it's room`);
+                return;
+            }
             const sendData = { room: newRoom };
             emitToRoom(rooms, newRoom.id, sendData, io);
         } catch (error) {
