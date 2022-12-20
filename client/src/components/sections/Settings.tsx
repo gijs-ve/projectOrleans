@@ -27,6 +27,16 @@ export const Settings = (p: GameProp) => {
     }, []);
     const [settings, setSettings] = useState<any>(initialSettings);
     if (!settings) return <></>;
+    if (game.hostId !== socket.id) {
+        return (
+            <>
+                <h1>Size {`${settings.size}`}</h1>
+                <h1>Max rounds {`${settings.maxRounds}`}</h1>
+                <h1>Timer {`${settings.timelineTime}`}</h1>
+                <h1>Timelines {`${settings.timelines}`}</h1>
+            </>
+        );
+    }
     return (
         <>
             <h1>Size {`${settings.size}`}</h1>
