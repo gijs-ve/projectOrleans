@@ -23,6 +23,7 @@ import {
     socketIdIsHost,
     generateNewRooms,
     findRoomById,
+    removePlayerFromRoom,
 } from './roomSystem';
 import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
 import { onTick } from './gameSystem/onTick';
@@ -108,6 +109,12 @@ io.on('connect', (socket: any) => {
 
     socket.on('disconnect', (reason: string) => {
         console.log(`User ${socket.id} disconnected (${reason})`);
+        const playerRemoved = removePlayerFromRoom(rooms, socket.id);
+        if (!playerRemoved) return;
+        const { newRooms, newRoom } = playerRemoved;
+        rooms = newRooms;
+        const sendData = { room: newRoom };
+        emitToRoom(rooms, newRoom.id, sendData, io);
     });
 });
 
