@@ -17,12 +17,14 @@ const PORT = 4000;
 import {
     createRoom,
     emitToRoom,
+    findRoomById,
+    findRoomBySocketId,
     joinRoom,
     startRoom,
     socketIdIsHost,
     generateNewRooms,
-    findRoomById,
     removePlayerFromRoom,
+    toggleSpectator,
 } from './roomSystem';
 import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
 import { onTick } from './gameSystem/onTick';
@@ -99,6 +101,16 @@ io.on('connect', (socket: any) => {
             console.log(error);
         }
     });
+        //Toggle spectator
+        socket.on('toggleSpectator', () => {
+            try {
+                const foundRoom = findRoomBySocketId(rooms, socket.id)
+                rooms = generateNewRooms(rooms, toggleSpectator(foundRoom, socket.id));
+            } catch (error) {
+                console.log(error);
+            }
+        });
+
     //Changes direction of a player
     socket.on('setDirection', (data: Data) => {
         try {
