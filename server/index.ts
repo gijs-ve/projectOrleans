@@ -122,7 +122,6 @@ io.on('connect', (socket: any) => {
     });
 
     socket.on('disconnect', (reason: string) => {
-        //NEEDS HOST MIGRATION
         try {
             console.log(`User ${socket.id} disconnected (${reason})`);
             const playerRemoved = removePlayerFromRoom(rooms, socket.id);
