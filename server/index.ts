@@ -123,19 +123,19 @@ io.on('connect', (socket: any) => {
 
     socket.on('disconnect', (reason: string) => {
         try {
-            console.log(`User ${socket.id} disconnected (${reason})`);
+            console.log(`User ${socket.id} disconnected (${reason}).`);
             const playerRemoved = removePlayerFromRoom(rooms, socket.id);
             if (!playerRemoved) {
-                console.log(`This user was not active in a single room`);
+                console.log(`This user was not active in a single room.`);
                 return;
             }
             const { newRooms, newRoom } = playerRemoved;
             console.log(
-                `This user has been removed from room with ID ${newRoom.id}`,
+                `This user has been removed from room with ID ${newRoom.id}.`,
             );
             rooms = newRooms;
             if (!newRoom) {
-                console.log(`This user was the last user in it's room`);
+                console.log(`This user was the last user in it's room, the room was removed.`);
                 return;
             }
             const sendData = { room: newRoom };
