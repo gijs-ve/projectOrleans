@@ -105,7 +105,10 @@ io.on('connect', (socket: any) => {
         socket.on('toggleSpectator', () => {
             try {
                 const foundRoom = findRoomBySocketId(rooms, socket.id)
+                if (!foundRoom) return
                 rooms = generateNewRooms(rooms, toggleSpectator(foundRoom, socket.id));
+                const sendData = { room: findRoomById(rooms, foundRoom.id)}
+                emitToRoom(rooms, foundRoom.id, sendData, io)
             } catch (error) {
                 console.log(error);
             }
