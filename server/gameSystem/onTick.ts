@@ -2,6 +2,7 @@ import { Room, Rooms, Player, Arena } from '../../types/types';
 import { getNextSquare } from './getNextSquare';
 import { squareIsSolid } from './squareIsSolid';
 
+//Handles events that occur every tick
 export const onTick = (rooms: Rooms): Rooms => {
     return rooms.map((i: Room) => {
         switch (i.phase) {
