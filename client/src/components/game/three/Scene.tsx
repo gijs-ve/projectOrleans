@@ -58,8 +58,11 @@ export function Scene() {
             <Boxline />
             {lightState ? (
                 <>
-                    <ambientLight />
-                    <mesh rotation={[0, 10, 0]}>
+                    <directionalLight
+                        castShadow={true}
+                        position={[0, 222, 555]}
+                    />
+                    <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
                         <boxGeometry attach="geometry" args={[1, 1, 1]} />
                         <meshStandardMaterial
                             attach="material"

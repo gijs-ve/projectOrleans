@@ -87,10 +87,10 @@ export function Terrain() {
         <>
             <mesh
                 ref={meshRef2}
-                position={[-2.285, -0.01, -1.325]}
+                position={[0, -11.05, 0]}
                 rotation-x={-Math.PI * 0.5}
             >
-                <planeGeometry args={[32, 32]} />
+                <planeGeometry args={[11, 32]} />
                 <meshBasicMaterial
                     opacity={0.325}
                     alphaMap={gridMap}
@@ -99,16 +99,9 @@ export function Terrain() {
                 />
             </mesh>
 
-            <mesh
-                ref={meshRef}
-                position={[coinPosition.x, coinPosition.y, coinPosition.z]}
-                rotation-x={-Math.PI * 0.5}
-                rotation-z={-0.079}
-            >
-                <circleGeometry args={[6.1, 222]} />
+            <mesh ref={meshRef} position={[0, -5, 0]}>
+                <boxGeometry args={[100, 2, 100]} />
                 <MeshReflectorMaterial
-                    aoMap={aoMap}
-                    alphaMap={alphaMap}
                     transparent={true}
                     color={[0.5, 0.5, 0.5]}
                     envMapIntensity={0.35}
