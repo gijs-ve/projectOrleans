@@ -1,4 +1,20 @@
-import { Rooms, Data, Room } from '../types/types';
+import { Data, Room, Rooms } from '../types/types';
+//Functions
+import {
+    createRoom,
+    emitToRoom,
+    findRoomById,
+    findRoomBySocketId,
+    generateNewRooms,
+    joinRoom,
+    removePlayerFromRoom,
+    socketIdIsHost,
+    startRoom,
+    toggleSpectator,
+} from './roomSystem';
+import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
+
+import { onTick } from './gameSystem/onTick';
 
 const corsMiddleWare = require('cors');
 const { Server } = require('socket.io');
@@ -6,28 +22,12 @@ const { Server } = require('socket.io');
 //Server setup
 const express = require('express');
 const app = express();
-
 // HTTP Server setup
 const http = require('http');
 const server = http.createServer(app);
 
 const PORT = 4000;
 
-//Functions
-import {
-    createRoom,
-    emitToRoom,
-    findRoomById,
-    findRoomBySocketId,
-    joinRoom,
-    startRoom,
-    socketIdIsHost,
-    generateNewRooms,
-    removePlayerFromRoom,
-    toggleSpectator,
-} from './roomSystem';
-import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
-import { onTick } from './gameSystem/onTick';
 
 //Socket setup
 const io = new Server(server);

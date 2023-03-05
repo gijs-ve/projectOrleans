@@ -1,7 +1,9 @@
 import './App.css';
-import { NoUserSection, Game } from './components';
-import { useSelector } from 'react-redux';
+
+import { Game, NoUserSection } from './components';
+
 import { selectState } from './store';
+import { useSelector } from 'react-redux';
 
 function App() {
     const rawState = useSelector(selectState());
