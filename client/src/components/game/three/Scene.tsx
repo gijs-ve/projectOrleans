@@ -8,19 +8,34 @@ import { Suspense, useEffect, useState } from 'react';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
 import { Terrain } from './Terrain';
-
+import { useSelector } from 'react-redux';
+import { selectState } from '../../../store';
+import { Game, Player, Square } from '../../../../../types/types';
 export type Position = {
     x: number;
     y: number;
     z: number;
 };
-const Boxline = () => {
-    const boxPositionArray: Position[] = [
-        { x: 0, y: 0, z: 0 },
-        { x: 0, y: 0, z: 2 },
-        { x: 0, y: 0, z: 4 },
-        { x: 2, y: 2, z: 2 },
-    ];
+const Boxline = (p: { game: Game }) => {
+    const { game } = p;
+    const { players } = game;
+    const playerBoxes = players.map((player: Player) => {
+        return player.position;
+    });
+    const filteredBoxes = playerBoxes.filter((square: Square | null) => {
+        if (!square || typeof square === null) return false;
+        return true;
+    });
+    const boxPositionArray = filteredBoxes.map((square: Square | null) => {
+        if (!square) return { x: 0, y: 0, z: 0 };
+        return { x: square.x, y: 0, z: square.y };
+    });
+    // const boxPositionArray: Position[] = [
+    //     { x: 0, y: 0, z: 0 },
+    //     { x: 0, y: 0, z: 2 },
+    //     { x: 0, y: 0, z: 4 },
+    //     { x: 2, y: 2, z: 2 },
+    // ];
     return (
         <>
             {boxPositionArray.map((pos: Position) => {
@@ -31,6 +46,8 @@ const Boxline = () => {
 };
 export function Scene() {
     const [lightState, switchLight] = useState<boolean>(true);
+    const rawState = useSelector(selectState());
+    const { game } = rawState.gameState;
 
     useEffect(() => {
         const onKeyPress = (e: any) => {
@@ -49,13 +66,14 @@ export function Scene() {
             window.removeEventListener('keydown', onKeyPress);
         };
     }, [lightState]);
+    if (!game) return <></>;
     return (
         <Suspense fallback={null}>
             <Environment
                 files={process.env.PUBLIC_URL + '/textures/envmap.hdr'}
                 background={true}
             />
-            <Boxline />
+            <Boxline game={game} />
             {lightState ? (
                 <>
                     <directionalLight
