@@ -4,7 +4,7 @@ import {
     PerspectiveCamera,
 } from '@react-three/drei';
 import { Suspense, useEffect, useState } from 'react';
-
+import { PlayerEntity } from './Entities/PlayerEntity';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
 import { Terrain } from './Terrain';
@@ -57,12 +57,7 @@ const Boxline = (p: { game: Game }) => {
                         color = 'white';
                         break;
                 }
-                return (
-                    <Box
-                        material-color={color}
-                        position={[pos.x, pos.y, pos.z]}
-                    />
-                );
+                return <PlayerEntity color={color} pos={pos} />;
             })}
         </>
     );
