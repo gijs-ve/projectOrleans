@@ -5,6 +5,7 @@ export type GamePhase = 'PreGame' | 'Preparing' | 'InGame' | string;
 //Players
 type PlayerId = number | null;
 export type Direction = 'Up' | 'Right' | 'Down' | 'Left';
+export type KeyDirection = 'Left' | 'Right';
 export type Player = {
     name: string;
     id: string;
@@ -62,6 +63,7 @@ export type Data = {
     roomId?: string;
     room?: Game;
     direction?: Direction;
+    keyDirection?: KeyDirection;
     settings?: Object;
 };
 

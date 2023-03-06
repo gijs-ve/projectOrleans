@@ -9,6 +9,7 @@ import { Scene } from '../game/three/Scene';
 import { SocketContext } from '../../socket/socket';
 import { gameReducer } from '../../store';
 import { useAppDispatch } from '../../hooks/hooks';
+import { Keys } from '../game/controler/Keys';
 
 export function InGame(p: GameProp) {
     const { game } = p;
@@ -28,6 +29,7 @@ export function InGame(p: GameProp) {
     }, []);
     return (
         <>
+            <Keys roomId={game.id} />
             <Canvas>
                 <Scene />
             </Canvas>
