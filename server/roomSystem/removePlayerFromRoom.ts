@@ -7,9 +7,9 @@ export const removePlayerFromRoom = (
     rooms: Rooms,
     socketId: string,
 ): { newRooms: Rooms; newRoom: Game | null } => {
-    const roomWithPlayer = rooms.find((i: Room) =>
-        roomHasSocketId(i, socketId),
-    );
+    const roomWithPlayer = rooms.find((i: Room) => {
+        return roomHasSocketId(i, socketId);
+    });
     //If player is not in a room return null
     if (!roomWithPlayer) return null;
     const newPlayers = roomWithPlayer.players.filter((i: Player) => {
