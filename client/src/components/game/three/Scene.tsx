@@ -16,30 +16,53 @@ export type Position = {
     y: number;
     z: number;
 };
+
 const Boxline = (p: { game: Game }) => {
     const { game } = p;
-    const { players } = game;
+    const { players, filledSquares } = game;
     const playerBoxes = players.map((player: Player) => {
-        return player.position;
+        return { ...player.position, playerId: player.playerId };
     });
-    const filteredBoxes = playerBoxes.filter((square: Square | null) => {
+    const filteredBoxes = playerBoxes.filter((square: any) => {
         if (!square || typeof square === null) return false;
         return true;
     });
-    const boxPositionArray = filteredBoxes.map((square: Square | null) => {
-        if (!square) return { x: 0, y: 0, z: 0 };
-        return { x: square.x, y: 0, z: square.y };
+    const totalSquares = [...filledSquares, ...filteredBoxes];
+    const boxPositionArray = totalSquares.map((square: any) => {
+        if (!square) return { x: 0, y: 0, z: 0, color: 'none' };
+        return { x: square.x, y: 0, z: square.y, color: square.playerId };
     });
-    // const boxPositionArray: Position[] = [
-    //     { x: 0, y: 0, z: 0 },
-    //     { x: 0, y: 0, z: 2 },
-    //     { x: 0, y: 0, z: 4 },
-    //     { x: 2, y: 2, z: 2 },
-    // ];
+
     return (
         <>
-            {boxPositionArray.map((pos: Position) => {
-                return <Box position={[pos.x, pos.y, pos.z]} />;
+            {boxPositionArray.map((pos: any) => {
+                let color = 'white';
+                switch (pos.color) {
+                    case 0:
+                        color = 'red';
+                        break;
+                    case 1:
+                        color = 'blue';
+                        break;
+                    case 2:
+                        color = 'hotpink';
+                        break;
+                    case 3:
+                        color = 'orange';
+                        break;
+                    case 4:
+                        color = 'green';
+                        break;
+                    default:
+                        color = 'white';
+                        break;
+                }
+                return (
+                    <Box
+                        material-color={color}
+                        position={[pos.x, pos.y, pos.z]}
+                    />
+                );
             })}
         </>
     );

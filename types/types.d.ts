@@ -32,7 +32,7 @@ export type Game = {
     players: Players;
     phase: GamePhase;
     arena: Arena;
-    filledSquares: Arena;
+    filledSquares: Square[];
     size: number;
     round: number;
     maxRounds: number;
