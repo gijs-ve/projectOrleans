@@ -1,6 +1,5 @@
-import { InGame, Lobby } from '.';
-
 import { GameProp } from '../../../../types/types';
+import { Lobby, InGame } from '.';
 
 export function Game(p: GameProp) {
     const { game } = p;
