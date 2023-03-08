@@ -4,14 +4,15 @@ import {
     PerspectiveCamera,
 } from '@react-three/drei';
 import { Game, Player, Square } from '../../../../../types/types';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useState } from 'react';
+import { getBorder, getSelf } from '../functions';
 
 import { BorderEntity } from './Entities/BorderEntity';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
 import { PlayerEntity } from './Entities/PlayerEntity';
+import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
-import { getBorder } from '../functions/getBorder';
 import { selectState } from '../../../store';
 import { useSelector } from 'react-redux';
 
@@ -49,16 +50,19 @@ const Players = (p: { game: Game }) => {
                         color = 'blue';
                         break;
                     case 2:
-                        color = 'hotpink';
-                        break;
-                    case 3:
                         color = 'orange';
                         break;
+                    case 3:
+                        color = 'cadet blue';
+                        break;
                     case 4:
-                        color = 'green';
+                        color = 'crimson';
+                        break;
+                    case 5:
+                        color = 'violet';
                         break;
                     default:
-                        color = 'white';
+                        color = 'gold';
                         break;
                 }
                 return <PlayerEntity color={color} pos={pos} />;
@@ -80,6 +84,7 @@ export const Border = (props: { roomSize: number }) => {
     return <>{borderBoxes}</>;
 };
 export function Scene() {
+    const socket = useContext(SocketContext);
     const [lightState, switchLight] = useState<boolean>(false);
     const rawState = useSelector(selectState());
     const { game } = rawState.gameState;
@@ -102,6 +107,11 @@ export function Scene() {
         };
     }, [lightState]);
     if (!game) return <></>;
+    const self = getSelf(game, socket.id);
+
+    if (!self || !self.position) return <></>;
+    if (!game) return <></>;
+    console.log('SELF', self);
     return (
         <Suspense fallback={null}>
             <Environment
@@ -130,8 +140,17 @@ export function Scene() {
             <Physics>
                 <Terrain />
             </Physics>
-            <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={30} />
-            <OrbitControls target={[0, 0, 0]} />
+            <PerspectiveCamera
+                makeDefault
+                position={[self.position.x, 2, self.position.y]}
+                fov={50}
+                zoom={5}
+            />
+            <OrbitControls
+                maxDistance={15}
+                enableZoom={true}
+                target={[self.position.x, 3, self.position.y]}
+            />
         </Suspense>
     );
 }
