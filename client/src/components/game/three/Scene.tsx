@@ -77,7 +77,13 @@ export const Border = (props: { roomSize: number }) => {
     const borderBoxes = border.map((square: Square) => {
         return (
             <>
-                <BorderEntity pos={{ x: square.x, y: square.y, z: square.z }} />
+                <BorderEntity
+                    pos={{
+                        x: square.x,
+                        y: square.y,
+                        z: square.z ? square.z : 0,
+                    }}
+                />
             </>
         );
     });
