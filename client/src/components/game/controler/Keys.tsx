@@ -1,4 +1,5 @@
 import { useContext, useEffect } from 'react';
+
 import { SocketContext } from '../../../socket/socket';
 
 export const Keys = (props: { roomId: string }) => {
@@ -15,11 +16,13 @@ export const Keys = (props: { roomId: string }) => {
                         keyDirection: 'Left',
                     });
                     break;
-                default:
+                case 'd':
                     socket.emit('setDirection', {
                         roomId,
                         keyDirection: 'Right',
                     });
+                    break;
+                default:
                     break;
             }
         };

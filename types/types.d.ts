@@ -22,6 +22,7 @@ export type Arena = Square[] | [];
 export type Square = {
     x: number;
     y: number;
+    z: number;
     playerId?: PlayerId;
     timeStamp?: number;
 };

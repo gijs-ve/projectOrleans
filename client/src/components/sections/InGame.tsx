@@ -4,12 +4,11 @@ import { Data, GameProp } from '../../../../types/types';
 import { useContext, useEffect } from 'react';
 
 import { Canvas } from '@react-three/fiber';
-import { OutputCanvas } from '../canvas';
+import { Keys } from '../game/controler/Keys';
 import { Scene } from '../game/three/Scene';
 import { SocketContext } from '../../socket/socket';
 import { gameReducer } from '../../store';
 import { useAppDispatch } from '../../hooks/hooks';
-import { Keys } from '../game/controler/Keys';
 
 export function InGame(p: GameProp) {
     const { game } = p;

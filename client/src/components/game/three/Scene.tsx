@@ -3,21 +3,25 @@ import {
     OrbitControls,
     PerspectiveCamera,
 } from '@react-three/drei';
+import { Game, Player, Square } from '../../../../../types/types';
 import { Suspense, useEffect, useState } from 'react';
-import { PlayerEntity } from './Entities/PlayerEntity';
+
+import { BorderEntity } from './Entities/BorderEntity';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
+import { PlayerEntity } from './Entities/PlayerEntity';
 import { Terrain } from './Terrain';
-import { useSelector } from 'react-redux';
+import { getBorder } from '../functions/getBorder';
 import { selectState } from '../../../store';
-import { Game, Player, Square } from '../../../../../types/types';
+import { useSelector } from 'react-redux';
+
 export type Position = {
     x: number;
     y: number;
     z: number;
 };
 
-const Boxline = (p: { game: Game }) => {
+const Players = (p: { game: Game }) => {
     const { game } = p;
     const { players, filledSquares } = game;
     const playerBoxes = players.map((player: Player) => {
@@ -30,7 +34,7 @@ const Boxline = (p: { game: Game }) => {
     const totalSquares = [...filledSquares, ...filteredBoxes];
     const boxPositionArray = totalSquares.map((square: any) => {
         if (!square) return { x: 0, y: 0, z: 0, color: 'none' };
-        return { x: square.x, y: 0, z: square.y, color: square.playerId };
+        return { x: square.x, y: 2, z: square.y, color: square.playerId };
     });
 
     return (
@@ -62,8 +66,21 @@ const Boxline = (p: { game: Game }) => {
         </>
     );
 };
+
+export const Border = (props: { roomSize: number }) => {
+    const { roomSize } = props;
+    const border = getBorder(roomSize);
+    const borderBoxes = border.map((square: Square) => {
+        return (
+            <>
+                <BorderEntity pos={{ x: square.x, y: square.y, z: square.z }} />
+            </>
+        );
+    });
+    return <>{borderBoxes}</>;
+};
 export function Scene() {
-    const [lightState, switchLight] = useState<boolean>(true);
+    const [lightState, switchLight] = useState<boolean>(false);
     const rawState = useSelector(selectState());
     const { game } = rawState.gameState;
 
@@ -91,7 +108,8 @@ export function Scene() {
                 files={process.env.PUBLIC_URL + '/textures/envmap.hdr'}
                 background={true}
             />
-            <Boxline game={game} />
+            <Border roomSize={game.size} />
+            <Players game={game} />
             {lightState ? (
                 <>
                     <directionalLight
