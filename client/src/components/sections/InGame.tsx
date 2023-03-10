@@ -4,7 +4,7 @@ import { Data, GameProp } from '../../../../types/types';
 import { useContext, useEffect } from 'react';
 
 import { Canvas } from '@react-three/fiber';
-import { OutputCanvas } from '../canvas';
+import { Keys } from '../game/controler/Keys';
 import { Scene } from '../game/three/Scene';
 import { SocketContext } from '../../socket/socket';
 import { gameReducer } from '../../store';
@@ -28,6 +28,7 @@ export function InGame(p: GameProp) {
     }, []);
     return (
         <>
+            <Keys roomId={game.id} />
             <Canvas>
                 <Scene />
             </Canvas>

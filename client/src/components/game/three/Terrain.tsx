@@ -87,7 +87,7 @@ export function Terrain() {
         <>
             <mesh
                 ref={meshRef2}
-                position={[0, -11.05, 0]}
+                position={[0, 0, 0]}
                 rotation-x={-Math.PI * 0.5}
             >
                 <planeGeometry args={[11, 32]} />
@@ -99,7 +99,7 @@ export function Terrain() {
                 />
             </mesh>
 
-            <mesh ref={meshRef} position={[0, -5, 0]}>
+            <mesh ref={meshRef} position={[0, 0, 0]}>
                 <boxGeometry args={[100, 2, 100]} />
                 <MeshReflectorMaterial
                     transparent={true}

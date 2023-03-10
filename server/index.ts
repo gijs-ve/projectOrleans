@@ -28,7 +28,6 @@ const server = http.createServer(app);
 
 const PORT = 4000;
 
-
 //Socket setup
 const io = new Server(server);
 
@@ -101,24 +100,31 @@ io.on('connect', (socket: any) => {
             console.log(error);
         }
     });
-        //Toggle spectator
-        socket.on('toggleSpectator', () => {
-            try {
-                const foundRoom = findRoomBySocketId(rooms, socket.id)
-                if (!foundRoom) return
-                rooms = generateNewRooms(rooms, toggleSpectator(foundRoom, socket.id));
-                const sendData = { room: findRoomById(rooms, foundRoom.id)}
-                emitToRoom(rooms, foundRoom.id, sendData, io)
-            } catch (error) {
-                console.log(error);
-            }
-        });
+    //Toggle spectator
+    socket.on('toggleSpectator', () => {
+        try {
+            const foundRoom = findRoomBySocketId(rooms, socket.id);
+            if (!foundRoom) return;
+            rooms = generateNewRooms(
+                rooms,
+                toggleSpectator(foundRoom, socket.id),
+            );
+            const sendData = { room: findRoomById(rooms, foundRoom.id) };
+            emitToRoom(rooms, foundRoom.id, sendData, io);
+        } catch (error) {
+            console.log(error);
+        }
+    });
 
     //Changes direction of a player
     socket.on('setDirection', (data: Data) => {
         try {
-            const { roomId, direction } = data;
-            rooms = setPlayerDirection(rooms, roomId, socket.id, direction);
+            const { roomId, keyDirection } = data;
+            console.log(keyDirection);
+            if (!roomId || !keyDirection) return;
+            rooms = setPlayerDirection(rooms, roomId, socket.id, keyDirection);
+            const sendData = { room: findRoomById(rooms, roomId) };
+            emitToRoom(rooms, roomId, sendData, io);
         } catch (error) {
             console.log(error);
         }
@@ -138,7 +144,9 @@ io.on('connect', (socket: any) => {
             );
             rooms = newRooms;
             if (!newRoom) {
-                console.log(`This user was the last user in it's room, the room was removed.`);
+                console.log(
+                    `This user was the last user in it's room, the room was removed.`,
+                );
                 return;
             }
             const sendData = { room: newRoom };

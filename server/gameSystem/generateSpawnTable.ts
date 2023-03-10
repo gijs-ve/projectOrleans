@@ -14,7 +14,6 @@ export const generateSpawnTable = (
                 i.y <= roomSize - 1
             );
         });
-        console.log('SPAWNTABLE', newSpawnTable);
         return newSpawnTable;
     }
 };

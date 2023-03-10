@@ -3,21 +3,26 @@ import {
     OrbitControls,
     PerspectiveCamera,
 } from '@react-three/drei';
-import { Suspense, useEffect, useState } from 'react';
+import { Game, Player, Square } from '../../../../../types/types';
+import { Suspense, useContext, useEffect, useState } from 'react';
+import { getBorder, getSelf } from '../functions';
 
+import { BorderEntity } from './Entities/BorderEntity';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
+import { PlayerEntity } from './Entities/PlayerEntity';
+import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
-import { useSelector } from 'react-redux';
 import { selectState } from '../../../store';
-import { Game, Player, Square } from '../../../../../types/types';
+import { useSelector } from 'react-redux';
+
 export type Position = {
     x: number;
     y: number;
     z: number;
 };
 
-const Boxline = (p: { game: Game }) => {
+const Players = (p: { game: Game }) => {
     const { game } = p;
     const { players, filledSquares } = game;
     const playerBoxes = players.map((player: Player) => {
@@ -30,7 +35,7 @@ const Boxline = (p: { game: Game }) => {
     const totalSquares = [...filledSquares, ...filteredBoxes];
     const boxPositionArray = totalSquares.map((square: any) => {
         if (!square) return { x: 0, y: 0, z: 0, color: 'none' };
-        return { x: square.x, y: 0, z: square.y, color: square.playerId };
+        return { x: square.x, y: 2, z: square.y, color: square.playerId };
     });
 
     return (
@@ -45,30 +50,48 @@ const Boxline = (p: { game: Game }) => {
                         color = 'blue';
                         break;
                     case 2:
-                        color = 'hotpink';
-                        break;
-                    case 3:
                         color = 'orange';
                         break;
+                    case 3:
+                        color = 'cadet blue';
+                        break;
                     case 4:
-                        color = 'green';
+                        color = 'crimson';
+                        break;
+                    case 5:
+                        color = 'violet';
                         break;
                     default:
-                        color = 'white';
+                        color = 'gold';
                         break;
                 }
-                return (
-                    <Box
-                        material-color={color}
-                        position={[pos.x, pos.y, pos.z]}
-                    />
-                );
+                return <PlayerEntity color={color} pos={pos} />;
             })}
         </>
     );
 };
+
+export const Border = (props: { roomSize: number }) => {
+    const { roomSize } = props;
+    const border = getBorder(roomSize);
+    const borderBoxes = border.map((square: Square) => {
+        return (
+            <>
+                <BorderEntity
+                    pos={{
+                        x: square.x,
+                        y: square.y,
+                        z: square.z ? square.z : 0,
+                    }}
+                />
+            </>
+        );
+    });
+    return <>{borderBoxes}</>;
+};
 export function Scene() {
-    const [lightState, switchLight] = useState<boolean>(true);
+    const socket = useContext(SocketContext);
+    const [lightState, switchLight] = useState<boolean>(false);
     const rawState = useSelector(selectState());
     const { game } = rawState.gameState;
 
@@ -90,13 +113,19 @@ export function Scene() {
         };
     }, [lightState]);
     if (!game) return <></>;
+    const self = getSelf(game, socket.id);
+
+    if (!self || !self.position) return <></>;
+    if (!game) return <></>;
+    console.log('SELF', self);
     return (
         <Suspense fallback={null}>
             <Environment
                 files={process.env.PUBLIC_URL + '/textures/envmap.hdr'}
                 background={true}
             />
-            <Boxline game={game} />
+            <Border roomSize={game.size} />
+            <Players game={game} />
             {lightState ? (
                 <>
                     <directionalLight
@@ -117,8 +146,17 @@ export function Scene() {
             <Physics>
                 <Terrain />
             </Physics>
-            <PerspectiveCamera makeDefault position={[0, 0, 5]} fov={30} />
-            <OrbitControls target={[0, 0, 0]} />
+            <PerspectiveCamera
+                makeDefault
+                position={[self.position.x, 2, self.position.y]}
+                fov={50}
+                zoom={5}
+            />
+            <OrbitControls
+                maxDistance={15}
+                enableZoom={true}
+                target={[self.position.x, 3, self.position.y]}
+            />
         </Suspense>
     );
 }
