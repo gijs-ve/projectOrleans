@@ -146,12 +146,12 @@ export function Scene() {
             <Physics>
                 <Terrain />
             </Physics>
-            <PerspectiveCamera
+            {/* <PerspectiveCamera
                 makeDefault
                 position={[self.position.x, 2, self.position.y]}
                 fov={50}
-                zoom={5}
-            />
+                zoom={8}
+            /> */}
             <OrbitControls
                 maxDistance={15}
                 enableZoom={true}
