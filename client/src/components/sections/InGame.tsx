@@ -8,10 +8,13 @@ import { Keys } from '../game/controler/Keys';
 import { Scene } from '../game/three/Scene';
 import { SocketContext } from '../../socket/socket';
 import { gameReducer } from '../../store';
+import { getCamera } from '../game/functions/getCamera';
+import { getSelf } from '../game/functions';
 import { useAppDispatch } from '../../hooks/hooks';
 
 export function InGame(p: GameProp) {
     const { game } = p;
+
     const socket = useContext(SocketContext);
     const dispatch = useAppDispatch();
     useEffect(() => {
@@ -26,10 +29,19 @@ export function InGame(p: GameProp) {
             socket.off('sendRoom');
         };
     }, []);
+    if (!game) return <></>;
+    const self = getSelf(game, socket.id);
+
+    if (!self || !self.position) return <></>;
+    if (!game) return <></>;
+    console.log('SELF', self);
+    const camera = getCamera(self);
+    console.log('CAMERA', camera);
+    if (!camera) return <></>;
     return (
         <>
             <Keys roomId={game.id} />
-            <Canvas>
+            <Canvas camera={{ position: [camera?.x, camera?.y, camera.z] }}>
                 <Scene />
             </Canvas>
         </>

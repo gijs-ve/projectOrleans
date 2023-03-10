@@ -13,6 +13,7 @@ import { Physics } from '@react-three/cannon';
 import { PlayerEntity } from './Entities/PlayerEntity';
 import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
+import { getCamera } from '../functions/getCamera';
 import { selectState } from '../../../store';
 import { useSelector } from 'react-redux';
 
@@ -118,6 +119,9 @@ export function Scene() {
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
     console.log('SELF', self);
+    const camera = getCamera(self);
+    console.log('CAMERA', camera);
+    if (!camera) return <></>;
     return (
         <Suspense fallback={null}>
             <Environment
@@ -148,14 +152,15 @@ export function Scene() {
             </Physics>
             {/* <PerspectiveCamera
                 makeDefault
-                position={[self.position.x, 2, self.position.y]}
+                position={[camera?.x, camera?.y, camera.z]}
                 fov={50}
-                zoom={8}
+                zoom={8}    
             /> */}
             <OrbitControls
-                maxDistance={15}
+                maxDistance={7}
                 enableZoom={true}
-                target={[self.position.x, 3, self.position.y]}
+                target={[self.position.x, 1, self.position.y]}
+                enableRotate={false}
             />
         </Suspense>
     );
