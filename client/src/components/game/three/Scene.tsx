@@ -4,7 +4,7 @@ import {
     PerspectiveCamera,
 } from '@react-three/drei';
 import { Game, Player, Square } from '../../../../../types/types';
-import { Suspense, useContext, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { getBorder, getSelf } from '../functions';
 
 import { BorderEntity } from './Entities/BorderEntity';
@@ -13,6 +13,7 @@ import { Physics } from '@react-three/cannon';
 import { PlayerEntity } from './Entities/PlayerEntity';
 import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
+import { Vector3 } from 'three';
 import { getCamera } from '../functions/getCamera';
 import { selectState } from '../../../store';
 import { useSelector } from 'react-redux';
@@ -94,6 +95,7 @@ export function Scene() {
     const socket = useContext(SocketContext);
     const [lightState, switchLight] = useState<boolean>(false);
     const rawState = useSelector(selectState());
+    const cameraRef = useRef();
     const { game } = rawState.gameState;
 
     useEffect(() => {
@@ -122,6 +124,7 @@ export function Scene() {
     const camera = getCamera(self);
     console.log('CAMERA', camera);
     if (!camera) return <></>;
+    const selfVector = new Vector3(self.position.x, 1, self.position.y);
     return (
         <Suspense fallback={null}>
             <Environment
@@ -150,18 +153,25 @@ export function Scene() {
             <Physics>
                 <Terrain />
             </Physics>
-            {/* <PerspectiveCamera
-                makeDefault
-                position={[camera?.x, camera?.y, camera.z]}
-                fov={50}
-                zoom={8}    
-            /> */}
-            <OrbitControls
-                maxDistance={7}
-                enableZoom={true}
-                target={[self.position.x, 1, self.position.y]}
-                enableRotate={false}
-            />
+            {!lightState && (
+                <PerspectiveCamera
+                    onUpdate={(camera) => {
+                        camera.lookAt(selfVector);
+                    }}
+                    makeDefault
+                    position={[camera?.x, camera?.y, camera.z]}
+                    fov={50}
+                    zoom={2}
+                />
+            )}
+            {lightState && (
+                <OrbitControls
+                    maxDistance={7}
+                    enableZoom={true}
+                    target={[self.position.x, 1, self.position.y]}
+                    enableRotate={false}
+                />
+            )}
         </Suspense>
     );
 }
