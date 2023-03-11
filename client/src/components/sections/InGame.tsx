@@ -35,13 +35,13 @@ export function InGame(p: GameProp) {
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
     console.log('SELF', self);
-    const camera = getCamera(self);
+    const camera = getCamera(self, true);
     console.log('CAMERA', camera);
     if (!camera) return <></>;
     return (
         <>
             <Keys roomId={game.id} />
-            <Canvas camera={{ position: [camera?.x, camera?.y, camera.z] }}>
+            <Canvas>
                 <Scene />
             </Canvas>
         </>

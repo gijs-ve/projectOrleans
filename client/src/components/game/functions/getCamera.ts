@@ -1,11 +1,14 @@
 import { Player } from '../../../../../types/types';
 import { Position } from '../three/Scene';
 
-export const getCamera = (player: Player): Position | null => {
+export const getCamera = (
+    player: Player,
+    cameraState: boolean,
+): Position | null => {
     if (!player.position) return null;
-    const cameraHeight: number = 3;
-    const cameraOffsetBack: number = 13;
-    const cameraOffsetHeight: number = 3;
+    const cameraHeight: number = cameraState ? 15 : 3;
+    const cameraOffsetBack: number = cameraState ? 0 : 13;
+    const cameraOffsetHeight: number = cameraState ? 0 : 3;
     if (player.direction === 'Up') {
         return {
             x: player.position.x,

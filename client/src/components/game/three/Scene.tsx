@@ -93,7 +93,7 @@ export const Border = (props: { roomSize: number }) => {
 };
 export function Scene() {
     const socket = useContext(SocketContext);
-    const [lightState, switchLight] = useState<boolean>(false);
+    const [cameraState, switchCameraState] = useState<boolean>(false);
     const rawState = useSelector(selectState());
     const cameraRef = useRef();
     const { game } = rawState.gameState;
@@ -104,7 +104,7 @@ export function Scene() {
             console.log(e.key);
             switch (e.key) {
                 case 'e':
-                    switchLight(!lightState);
+                    switchCameraState(!cameraState);
                     break;
                 default:
                     break;
@@ -114,14 +114,14 @@ export function Scene() {
         return () => {
             window.removeEventListener('keydown', onKeyPress);
         };
-    }, [lightState]);
+    }, [cameraState]);
     if (!game) return <></>;
     const self = getSelf(game, socket.id);
 
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
     console.log('SELF', self);
-    const camera = getCamera(self);
+    const camera = getCamera(self, cameraState);
     console.log('CAMERA', camera);
     if (!camera) return <></>;
     const selfVector = new Vector3(self.position.x, 1, self.position.y);
@@ -133,45 +133,35 @@ export function Scene() {
             />
             <Border roomSize={game.size} />
             <Players game={game} />
-            {lightState ? (
-                <>
-                    <directionalLight
-                        castShadow={true}
-                        position={[0, 222, 555]}
-                    />
-                    <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
-                        <boxGeometry attach="geometry" args={[1, 1, 1]} />
-                        <meshStandardMaterial
-                            attach="material"
-                            color={'#6be092'}
-                        />
-                    </mesh>
-                </>
-            ) : (
-                <></>
-            )}
+
+            <>
+                <directionalLight castShadow={true} position={[0, 222, 555]} />
+                <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
+                    <boxGeometry attach="geometry" args={[1, 1, 1]} />
+                    <meshStandardMaterial attach="material" color={'#6be092'} />
+                </mesh>
+            </>
             <Physics>
                 <Terrain />
             </Physics>
-            {!lightState && (
-                <PerspectiveCamera
-                    onUpdate={(camera) => {
-                        camera.lookAt(selfVector);
-                    }}
-                    makeDefault
-                    position={[camera?.x, camera?.y, camera.z]}
-                    fov={50}
-                    zoom={2}
-                />
-            )}
-            {lightState && (
+
+            <PerspectiveCamera
+                onUpdate={(camera) => {
+                    camera.lookAt(selfVector);
+                }}
+                makeDefault
+                position={[camera?.x, camera?.y, camera.z]}
+                fov={50}
+                zoom={2}
+            />
+            {/* {lightState && (
                 <OrbitControls
-                    maxDistance={7}
+                    maxDistance={25}
                     enableZoom={true}
                     target={[self.position.x, 1, self.position.y]}
                     enableRotate={false}
                 />
-            )}
+            )} */}
         </Suspense>
     );
 }
