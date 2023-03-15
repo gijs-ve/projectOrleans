@@ -45,7 +45,7 @@ const raiseTimer = () => {
         console.log(error);
     }
 };
-setInterval(raiseTimer, 500);
+setInterval(raiseTimer, 250);
 
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
