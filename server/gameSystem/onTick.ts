@@ -30,7 +30,6 @@ export const onTick = (rooms: Rooms): Rooms => {
                                 i.filledSquares,
                             )
                         ) {
-                            console.log('NEXT SQUARE', getNextSquare(j));
                             return { ...j, position: getNextSquare(j) };
                         }
                         return { ...j, isAlive: false };

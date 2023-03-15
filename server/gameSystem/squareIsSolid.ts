@@ -11,14 +11,12 @@ export const squareIsSolid = (
         square.x <= 0 ||
         square.y <= 0
     ) {
-        console.log('SOLID SQUARE');
         return true;
     }
     const stringSquares = filledSquares.map((i: Square) => {
         return `X${i.x}Y${i.y}`;
     });
     if (stringSquares.includes(`X${square.x}Y${square.y}`)) {
-        console.log('SOLID SQUARE');
         return true;
     }
     return false;

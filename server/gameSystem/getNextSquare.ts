@@ -2,7 +2,6 @@ import { Player, Square } from '../../types/types';
 
 //takes a player, returns the next square for that player
 export const getNextSquare = (player: Player): Square => {
-    console.log('PLAYERDIRECTION', player.direction);
     switch (player.direction) {
         case 'Up':
             return { x: player.position.x, y: player.position.y - 1 };
