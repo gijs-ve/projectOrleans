@@ -14,6 +14,8 @@ import {
 } from './roomSystem';
 import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
 
+import { Socket } from 'socket.io';
+import { createServer } from 'socket/createServer';
 import { onTick } from './gameSystem/onTick';
 
 const corsMiddleWare = require('cors');
@@ -24,12 +26,9 @@ const express = require('express');
 const app = express();
 // HTTP Server setup
 const http = require('http');
-const server = http.createServer(app);
+const { server, io } = createServer();
 
 const PORT = 4000;
-
-//Socket setup
-const io = new Server(server);
 
 let rooms: Rooms = [];
 
@@ -47,24 +46,17 @@ const raiseTimer = () => {
 };
 setInterval(raiseTimer, 500);
 
+const onConnection = (socket: Socket) => {
+    try {
+        createRoom(io, socket);
+    } catch (error) {
+        console.log(error);
+    }
+};
+io.on('connect', onConnection);
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
-    socket.on('createRoom', (data: Data) => {
-        try {
-            const { playerName } = data;
-            console.log(`User ${playerName} ${socket.id} created a room`);
-            const { newRooms, newRoom } = createRoom(
-                rooms,
-                playerName,
-                socket.id,
-            );
-            rooms = newRooms;
-            const sendData: Data = { room: newRoom };
-            socket.emit('sendRoom', sendData);
-        } catch (error) {
-            console.log(error);
-        }
-    });
+
     //Handles a player attempting to join a room
     socket.on('joinRoom', (data: Data) => {
         try {

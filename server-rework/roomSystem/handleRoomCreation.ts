@@ -1,6 +1,7 @@
 import { Game, Rooms } from '../../types/types';
+import store, { addRoom } from 'store';
 const { v4: uuidv4 } = require('uuid');
-export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
+export const handleRoomCreation = (hostName: string, hostId: string): void => {
     const room: Game = {
         id: uuidv4().split('-')[0],
         hostId,
@@ -25,5 +26,5 @@ export const createRoom = (rooms: Rooms, hostName: string, hostId: string) => {
         timelineTime: 30,
         size: 25,
     };
-    return { newRooms: [...rooms, room], newRoom: room };
+    store.dispatch(addRoom(room));
 };
