@@ -1,7 +1,7 @@
 import { Player, Room, Rooms } from '../../../types/types';
-import store, { setRoom } from 'store';
+import store, { setRoom } from '../../store';
 
-import { fillArena } from 'gameSystem';
+import { fillArena } from '../../gameSystem';
 import { findRoomById } from '..';
 
 export const handleRoomStart = (roomId: string) => {

@@ -1,8 +1,8 @@
-import store, { setRooms } from 'store';
+import store, { setRooms } from './store';
 
 import { Room } from '../types/types';
 import { Socket } from 'socket.io';
-import { createServer } from 'socket/createServer';
+import { createServer } from './socket/createServer';
 //Functions
 import { emitRoomToRoom } from './roomSystem';
 import { onTick } from './gameSystem/onTick';

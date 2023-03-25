@@ -9,7 +9,7 @@ import { fillArena, getStartPositions } from 'gameSystem';
 import { Data } from '../../types/types';
 import { IO } from './createServer';
 import { Socket } from 'socket.io';
-import store from 'store';
+import store from '../store';
 
 //Starts a room
 module.exports = (io: IO, socket: Socket) => {

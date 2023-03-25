@@ -1,5 +1,5 @@
 import { Player, Room, Rooms } from '../../../types/types';
-import store, { setRoom } from 'store';
+import store, { setRoom } from '../../store';
 export const handlePlayerJoin = (
     roomId: string,
     playerName: string,

@@ -7,7 +7,7 @@ import {
 
 import { IO } from './createServer';
 import { Socket } from 'socket.io';
-import { setRoom } from 'store';
+import { setRoom } from '../store';
 
 module.exports = (io: IO, socket: Socket) => {
     const toggleSpectator = () => {

@@ -1,5 +1,5 @@
 import { KeyDirection, Player, Room, Rooms } from '../../types/types';
-import store, { setRooms } from 'store';
+import store, { setRooms } from '../store';
 
 export const setPlayerDirection = (
     roomId: string,

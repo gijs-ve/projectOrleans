@@ -1,6 +1,6 @@
 import { Data, Player, Room, Rooms } from '../../types/types';
 
-import store from 'store';
+import store from '../store';
 
 const emitRoomToRoom = (roomId: string, io): void => {
     const { rooms } = store.getState().roomState;

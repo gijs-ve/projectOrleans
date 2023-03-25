@@ -1,5 +1,5 @@
 import { emitRoomToRoom, handlePlayerRemoval } from 'roomSystem';
-import store, { setRooms } from 'store';
+import store, { setRooms } from '../store';
 
 import { IO } from './createServer';
 import { Socket } from 'socket.io';
