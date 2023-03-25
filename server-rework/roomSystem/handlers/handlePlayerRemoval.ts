@@ -1,8 +1,6 @@
 import { Game, Player, Room, Rooms } from '../../../types/types';
+import { handleNewHost, roomHasSocketId, socketIdIsHost } from '..';
 
-import { handleNewHost } from './handleNewHost';
-import { roomHasSocketId } from '../roomHasSocketId';
-import { socketIdIsHost } from '../socketIdIsHost';
 import store from 'store';
 
 export const handlePlayerRemoval = (
