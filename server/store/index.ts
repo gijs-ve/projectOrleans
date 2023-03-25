@@ -1,5 +1,7 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+
 import { Room } from '../../types/types';
+
 const initialState: { rooms: Room[] | [] } = {
     rooms: [],
 };
@@ -11,7 +13,6 @@ const roomSlice = createSlice({
             state.rooms = action.payload;
         },
         addRoom: (state, action: { payload: Room }) => {
-            console.log('PAYLOAD', action.payload);
             state.rooms = [...state.rooms, action.payload];
         },
     },
