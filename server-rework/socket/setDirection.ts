@@ -2,7 +2,7 @@ import { IO } from './createServer';
 import { KeyDirection } from '../../types/types';
 import { Socket } from 'socket.io';
 import { emitRoomToRoom } from '../roomSystem';
-import { setPlayerDirection } from 'gameSystem';
+import { setPlayerDirection } from '../gameSystem';
 
 //Changes direction of a player
 module.exports = (io: IO, socket: Socket) => {

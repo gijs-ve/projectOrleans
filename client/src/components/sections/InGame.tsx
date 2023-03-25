@@ -19,6 +19,7 @@ export function InGame(p: GameProp) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         socket.on('sendRoom', (data: Data) => {
+            console.log(data);
             if (!data.room) return;
             dispatch(gameReducer({ type: 'GAME_RECEIVED', game: data.room }));
             dispatch(

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
-import { Game, Square, State, Action } from '../../../../types/types';
+import { Action, Game, Square, State } from '../../../../types/types';
+import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
 
 const initialState: State = {
     connected: false,
@@ -13,6 +13,7 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         gameReducer: (state: State, action: PayloadAction<Action>) => {
+            console.log(action.payload);
             const { type } = action.payload;
             switch (type) {
                 case 'SET_CONNECTED':
