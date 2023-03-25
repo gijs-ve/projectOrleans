@@ -1,8 +1,8 @@
-import { Player, Room, Rooms } from '../../types/types';
+import { Player, Room, Rooms } from '../../../types/types';
 import store, { setRoom } from 'store';
 
 import { fillArena } from 'gameSystem';
-import { findRoomById } from '.';
+import { findRoomById } from '..';
 
 export const handleRoomStart = (roomId: string) => {
     const { rooms } = store.getState().roomState;

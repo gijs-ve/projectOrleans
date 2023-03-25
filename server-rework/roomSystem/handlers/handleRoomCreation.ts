@@ -1,4 +1,4 @@
-import { Game, Rooms } from '../../types/types';
+import { Game, Rooms } from '../../../types/types';
 import store, { addRoom } from 'store';
 const { v4: uuidv4 } = require('uuid');
 export const handleRoomCreation = (hostName: string, hostId: string): void => {

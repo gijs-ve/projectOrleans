@@ -1,6 +1,6 @@
-import { Player, Room } from '../../types/types';
+import { Player, Room } from '../../../types/types';
 
-import { getPlayersFromRoom } from './getPlayersFromRoom';
+import { getPlayersFromRoom } from '../getPlayersFromRoom';
 
 //takes a room and returns a new room with the spectator status changed
 export const handleSpectatorToggle = (room: Room, socketId: string): Room => {
