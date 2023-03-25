@@ -1,10 +1,11 @@
 import { Player, Room, Rooms } from '../../types/types';
-export const joinRoom = (
-    rooms: Rooms,
+import store, { setRoom } from 'store';
+export const addPlayerToRoom = (
     roomId: string,
     playerName: string,
     socketId: string,
 ) => {
+    const { rooms } = store.getState().roomState;
     if (rooms.length === 0) return;
     const newPlayer: Player = {
         name: playerName,
@@ -18,9 +19,5 @@ export const joinRoom = (
     const room = rooms.find((i: Room) => i.id === roomId);
     const newPlayers = [...room.players, newPlayer];
     const newRoom = { ...room, players: newPlayers };
-    const newRooms = rooms.map((i: Room) => {
-        if (i.id === roomId) return newRoom;
-        return i;
-    });
-    return { newRooms, newRoom };
+    setRoom(newRoom);
 };

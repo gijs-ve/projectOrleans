@@ -1,11 +1,11 @@
 import { Data, Room, Rooms } from '../types/types';
 //Functions
 import {
+    addPlayerToRoom,
     emitRoomToRoom,
     findRoomById,
     findRoomBySocketId,
     handleSpectatorToggle,
-    joinRoom,
     removePlayerFromRoom,
     socketIdIsHost,
 } from './roomSystem';
@@ -45,13 +45,20 @@ const raiseTimer = () => {
 setInterval(raiseTimer, 500);
 
 const createRoom = require('./socket/createRoom');
-const toggleSpectator = require('./socket/toggleSpectator');
+const joinRoom = require('./socket/joinRoom');
 const setDirection = require('./socket/setDirection');
+const startRoom = require('./socket/startRoom');
+const toggleSpectator = require('./socket/toggleSpectator');
+const onDisconnect = require('./socket/onDisconnect');
+
 const onConnection = (socket: Socket) => {
     try {
         createRoom(io, socket);
-        toggleSpectator(io, socket);
+        joinRoom(io, socket);
         setDirection(io, socket);
+        startRoom(io, socket);
+        toggleSpectator(io, socket);
+        onDisconnect(io, socket);
     } catch (error) {
         console.log(error);
     }
@@ -59,53 +66,6 @@ const onConnection = (socket: Socket) => {
 io.on('connect', onConnection);
 io.on('connect', (socket: any) => {
     console.log(`User ${socket.id} connected`);
-
-    //Handles a player attempting to join a room
-    socket.on('joinRoom', (data: Data) => {
-        try {
-            const { roomId, playerName } = data;
-            console.log(
-                `User ${playerName} ${socket.id} joined room ${roomId}`,
-            );
-            const { newRooms, newRoom } = joinRoom(
-                rooms,
-                roomId,
-                playerName,
-                socket.id,
-            );
-            rooms = newRooms;
-            const sendData = { room: newRoom };
-            emitRoomToRoom(newRoom.id, io);
-        } catch (error) {
-            console.log(error);
-        }
-    });
-
-    socket.on('disconnect', (reason: string) => {
-        try {
-            console.log(`User ${socket.id} disconnected (${reason}).`);
-            const playerRemoved = removePlayerFromRoom(rooms, socket.id);
-            if (!playerRemoved) {
-                console.log(`This user was not active in a single room.`);
-                return;
-            }
-            const { newRooms, newRoom } = playerRemoved;
-            console.log(
-                `This user has been removed from room with ID ${newRoom.id}.`,
-            );
-            rooms = newRooms;
-            if (!newRoom) {
-                console.log(
-                    `This user was the last user in it's room, the room was removed.`,
-                );
-                return;
-            }
-            const sendData = { room: newRoom };
-            emitRoomToRoom(newRoom.id, io);
-        } catch (error) {
-            console.log(error);
-        }
-    });
 });
 
 server.listen(PORT, () => console.log(`listening on port ${PORT}`));
