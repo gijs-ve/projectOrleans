@@ -1,6 +1,8 @@
-import { IO } from 'functions/helpers/createServer';
+import { findRoomBySocketId, handleRoomCreation } from '../roomSystem';
+
+import { Data } from '../../types/types';
+import { IO } from './createServer';
 import { Socket } from 'socket.io';
-import { handleRoomCreation } from '../roomSystem';
 module.exports = (io: IO, socket: Socket) => {
     const createRoom = (data: any) => {
         try {
@@ -8,7 +10,7 @@ module.exports = (io: IO, socket: Socket) => {
             console.log(`User ${playerName} ${socket.id} created a room`);
             handleRoomCreation(playerName, socket.id);
 
-            const sendData: Data = { room: newRoom };
+            const sendData: Data = { room: findRoomBySocketId(socket.id) };
             socket.emit('sendRoom', sendData);
         } catch (error) {
             console.log(error);
