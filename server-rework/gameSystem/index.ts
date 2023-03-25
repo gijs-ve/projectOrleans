@@ -1,5 +1,5 @@
 export * from './fillArena';
-export * from './getStartPosition';
+export * from './getStartPositions';
 export * from './calculateNewPositions';
 export * from './getNextSquare';
 export * from './setPlayerDirection';

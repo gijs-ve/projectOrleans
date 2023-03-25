@@ -1,7 +1,7 @@
 import { Player, Room, Rooms } from '../../../types/types';
 import store, { setRoom } from '../../store';
 
-import { fillArena } from '../../gameSystem';
+import { calculateNewPositions, fillArena } from '../../gameSystem';
 import { findRoomById } from '..';
 
 export const handleRoomStart = (roomId: string) => {
@@ -13,6 +13,5 @@ export const handleRoomStart = (roomId: string) => {
         timer: 5,
         round: 1,
     };
-    const filledRoom = fillArena(startedRoom);
-    store.dispatch(setRoom(filledRoom));
+    store.dispatch(setRoom(calculateNewPositions(fillArena(startedRoom))));
 };

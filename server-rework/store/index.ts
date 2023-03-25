@@ -1,7 +1,8 @@
-import { Room, Rooms } from '../../types/types';
+import { Player, Room, Rooms } from '../../types/types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 import { generateNewRooms } from './generateNewRooms';
+import { findRoomById, findRoomBySocketId } from 'roomSystem';
 
 const initialState: { rooms: Rooms } = {
     rooms: [],
@@ -33,6 +34,19 @@ const roomSlice = createSlice({
             const newRooms = generateNewRooms(rooms, payload);
             console.log('NEWROOMS SETROOM', newRooms);
             state.rooms = newRooms;
+        },
+        setPlayer: (state, action: { payload: Player }) => {
+            const { payload } = action;
+            const { rooms } = state;
+            const foundRoom = findRoomBySocketId(payload.id);
+            const newPlayers = foundRoom.players.map((player: Player) => {
+                if (player.id === payload.id) {
+                    return payload;
+                }
+                return player;
+            });
+            const newRoom: Room = { ...foundRoom, players: newPlayers };
+            state.rooms = generateNewRooms(rooms, newRoom);
         },
     },
 });
