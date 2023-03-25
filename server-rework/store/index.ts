@@ -28,8 +28,10 @@ const roomSlice = createSlice({
         },
         setRoom: (state, action: { payload: Room }) => {
             const { payload } = action;
+            console.log('action', payload);
             const { rooms } = state;
             const newRooms = generateNewRooms(rooms, payload);
+            console.log('NEWROOMS SETROOM', newRooms);
             state.rooms = newRooms;
         },
     },

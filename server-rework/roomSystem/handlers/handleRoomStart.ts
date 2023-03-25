@@ -14,5 +14,5 @@ export const handleRoomStart = (roomId: string) => {
         round: 1,
     };
     const filledRoom = fillArena(startedRoom);
-    setRoom(filledRoom);
+    store.dispatch(setRoom(filledRoom));
 };

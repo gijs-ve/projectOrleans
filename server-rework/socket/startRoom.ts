@@ -1,4 +1,9 @@
-import { emitRoomToRoom, handleRoomStart, socketIdIsHost } from '../roomSystem';
+import {
+    emitRoomToRoom,
+    findRoomById,
+    handleRoomStart,
+    socketIdIsHost,
+} from '../roomSystem';
 
 import { Data } from '../../types/types';
 import { IO } from './createServer';
@@ -15,6 +20,8 @@ module.exports = (io: IO, socket: Socket) => {
             console.log(`User with ID ${socket.id} started room ${roomId}`);
             handleRoomStart(roomId);
             emitRoomToRoom(roomId, io);
+
+            console.log('started ROOM', findRoomById(roomId));
         } catch (error) {
             console.log(error);
         }

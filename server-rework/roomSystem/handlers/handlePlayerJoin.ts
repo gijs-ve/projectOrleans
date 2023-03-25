@@ -19,5 +19,5 @@ export const handlePlayerJoin = (
     const room = rooms.find((i: Room) => i.id === roomId);
     const newPlayers = [...room.players, newPlayer];
     const newRoom = { ...room, players: newPlayers };
-    setRoom(newRoom);
+    store.dispatch(setRoom(newRoom));
 };

@@ -19,20 +19,17 @@ export function InGame(p: GameProp) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         socket.on('sendRoom', (data: Data) => {
-            console.log(data);
             if (!data.room) return;
             dispatch(gameReducer({ type: 'GAME_RECEIVED', game: data.room }));
-            dispatch(
-                gameReducer({ type: 'PHASE_CHANGE', phase: data.room.phase }),
-            );
         });
         return () => {
             socket.off('sendRoom');
         };
     }, []);
+
     if (!game) return <></>;
     const self = getSelf(game, socket.id);
-
+    console.log(self);
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
     console.log('SELF', self);

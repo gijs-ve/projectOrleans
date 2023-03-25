@@ -17,8 +17,8 @@ const raiseTimer = () => {
     try {
         const { rooms } = store.getState().roomState;
         setRooms(onTick(rooms));
-        rooms.map((i: Room) => {
-            emitRoomToRoom(i.id, io);
+        rooms.map((room: Room) => {
+            emitRoomToRoom(room.id, io);
         });
     } catch (error) {
         console.log(error);

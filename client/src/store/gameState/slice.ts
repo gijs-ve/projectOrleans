@@ -13,7 +13,6 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         gameReducer: (state: State, action: PayloadAction<Action>) => {
-            console.log(action.payload);
             const { type } = action.payload;
             switch (type) {
                 case 'SET_CONNECTED':
@@ -26,7 +25,6 @@ export const gameSlice = createSlice({
                     state.game = action.payload.game;
                     break;
                 case 'PHASE_CHANGE':
-                    console.log(current(state));
                     // if (!state.game) break;
                     // state.game.phase = action.payload.phase;
                     break;
