@@ -1,4 +1,4 @@
-import { emitRoomToRoom, removePlayerFromRoom } from 'roomSystem';
+import { emitRoomToRoom, handlePlayerRemoval } from 'roomSystem';
 import store, { setRooms } from 'store';
 
 import { IO } from './createServer';
@@ -8,7 +8,7 @@ module.exports = (io: IO, socket: Socket) => {
     const onDisconnect = (reason: string) => {
         try {
             console.log(`User ${socket.id} disconnected (${reason}).`);
-            const playerRemoved = removePlayerFromRoom(socket.id);
+            const playerRemoved = handlePlayerRemoval(socket.id);
             if (!playerRemoved) {
                 console.log(`This user was not active in a single room.`);
                 return;

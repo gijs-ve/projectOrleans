@@ -1,11 +1,11 @@
-import { Game, Player, Room, Rooms } from '../../types/types';
+import { Game, Player, Room, Rooms } from '../../../types/types';
 
-import { getNewHost } from './getNewHost';
-import { roomHasSocketId } from './roomHasSocketId';
-import { socketIdIsHost } from './socketIdIsHost';
+import { handleNewHost } from './handleNewHost';
+import { roomHasSocketId } from '../roomHasSocketId';
+import { socketIdIsHost } from '../socketIdIsHost';
 import store from 'store';
 
-export const removePlayerFromRoom = (
+export const handlePlayerRemoval = (
     socketId: string,
 ): { newRooms: Rooms; newRoom: Game | null } | null => {
     const { rooms } = store.getState().roomState;
@@ -27,7 +27,7 @@ export const removePlayerFromRoom = (
         return { newRooms, newRoom: null };
     }
     const newHostId = socketIdIsHost(rooms, roomWithPlayer.id, socketId)
-        ? getNewHost(roomWithPlayer, socketId)
+        ? handleNewHost(roomWithPlayer, socketId)
         : roomWithPlayer.hostId;
     const newRoom = {
         ...roomWithPlayer,
