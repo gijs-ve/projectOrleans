@@ -1,11 +1,12 @@
-import { GameProp } from '../../../../types/types';
 import { PlayerList, StartRoomButton } from '..';
-import { useEffect, useContext } from 'react';
+import { Settings, SpectatorToggle } from '.';
+import { useContext, useEffect } from 'react';
+
 import { Data } from '../../../../types/types';
+import { GameProp } from '../../../../types/types';
+import { SocketContext } from '../../socket/socket';
 import { gameReducer } from '../../store';
 import { useAppDispatch } from '../../hooks/hooks';
-import { SocketContext } from '../../socket/socket';
-import { Settings, SpectatorToggle } from '.';
 
 export function Lobby(p: GameProp) {
     const { game } = p;
@@ -15,9 +16,6 @@ export function Lobby(p: GameProp) {
         socket.on('sendRoom', (data: Data) => {
             if (!data.room) return;
             dispatch(gameReducer({ type: 'GAME_RECEIVED', game: data.room }));
-            dispatch(
-                gameReducer({ type: 'PHASE_CHANGE', phase: data.room.phase }),
-            );
         });
         return () => {
             socket.off('sendRoom');
