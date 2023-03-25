@@ -7,11 +7,12 @@ import { findRoomById } from '..';
 export const handleRoomStart = (roomId: string) => {
     const { rooms } = store.getState().roomState;
     if (rooms.length === 0) return;
-    const startedRoom = findRoomById(roomId);
-    startedRoom.phase = 'Preparing';
-    startedRoom.timer = 5;
-    startedRoom.round = 1;
-    2;
+    const startedRoom = {
+        ...findRoomById(roomId),
+        phase: 'Preparing',
+        timer: 5,
+        round: 1,
+    };
     const filledRoom = fillArena(startedRoom);
     setRoom(filledRoom);
 };
