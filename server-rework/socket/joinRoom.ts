@@ -1,4 +1,4 @@
-import { addPlayerToRoom, emitRoomToRoom } from '../roomSystem';
+import { emitRoomToRoom, handlePlayerJoin } from '../roomSystem';
 
 import { IO } from './createServer';
 import { Socket } from 'socket.io';
@@ -10,7 +10,7 @@ module.exports = (io: IO, socket: Socket) => {
             console.log(
                 `User ${playerName} ${socket.id} joined room ${roomId}`,
             );
-            addPlayerToRoom(roomId, playerName, socket.id);
+            handlePlayerJoin(roomId, playerName, socket.id);
             emitRoomToRoom(roomId, io);
         } catch (error) {
             console.log(error);

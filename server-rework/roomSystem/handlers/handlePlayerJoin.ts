@@ -1,10 +1,10 @@
-import { Player, Room, Rooms } from '../../types/types';
+import { Player, Room, Rooms } from '../../../types/types';
 import store, { setRoom } from 'store';
-export const addPlayerToRoom = (
+export const handlePlayerJoin = (
     roomId: string,
     playerName: string,
     socketId: string,
-) => {
+): void => {
     const { rooms } = store.getState().roomState;
     if (rooms.length === 0) return;
     const newPlayer: Player = {
