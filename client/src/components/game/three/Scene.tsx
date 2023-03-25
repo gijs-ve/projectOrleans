@@ -4,7 +4,7 @@ import {
     PerspectiveCamera,
 } from '@react-three/drei';
 import { Game, Player, Square } from '../../../../../types/types';
-import { Suspense, useContext, useEffect, useState } from 'react';
+import { Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { getBorder, getSelf } from '../functions';
 
 import { BorderEntity } from './Entities/BorderEntity';
@@ -13,6 +13,8 @@ import { Physics } from '@react-three/cannon';
 import { PlayerEntity } from './Entities/PlayerEntity';
 import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
+import { Vector3 } from 'three';
+import { getCamera } from '../functions/getCamera';
 import { selectState } from '../../../store';
 import { useSelector } from 'react-redux';
 
@@ -91,8 +93,9 @@ export const Border = (props: { roomSize: number }) => {
 };
 export function Scene() {
     const socket = useContext(SocketContext);
-    const [lightState, switchLight] = useState<boolean>(false);
+    const [cameraState, switchCameraState] = useState<boolean>(false);
     const rawState = useSelector(selectState());
+    const cameraRef = useRef();
     const { game } = rawState.gameState;
 
     useEffect(() => {
@@ -101,7 +104,7 @@ export function Scene() {
             console.log(e.key);
             switch (e.key) {
                 case 'e':
-                    switchLight(!lightState);
+                    switchCameraState(!cameraState);
                     break;
                 default:
                     break;
@@ -111,13 +114,17 @@ export function Scene() {
         return () => {
             window.removeEventListener('keydown', onKeyPress);
         };
-    }, [lightState]);
+    }, [cameraState]);
     if (!game) return <></>;
     const self = getSelf(game, socket.id);
 
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
     console.log('SELF', self);
+    const camera = getCamera(self, cameraState);
+    console.log('CAMERA', camera);
+    if (!camera) return <></>;
+    const selfVector = new Vector3(self.position.x, 1, self.position.y);
     return (
         <Suspense fallback={null}>
             <Environment
@@ -126,37 +133,35 @@ export function Scene() {
             />
             <Border roomSize={game.size} />
             <Players game={game} />
-            {lightState ? (
-                <>
-                    <directionalLight
-                        castShadow={true}
-                        position={[0, 222, 555]}
-                    />
-                    <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
-                        <boxGeometry attach="geometry" args={[1, 1, 1]} />
-                        <meshStandardMaterial
-                            attach="material"
-                            color={'#6be092'}
-                        />
-                    </mesh>
-                </>
-            ) : (
-                <></>
-            )}
+
+            <>
+                <directionalLight castShadow={true} position={[0, 222, 555]} />
+                <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
+                    <boxGeometry attach="geometry" args={[1, 1, 1]} />
+                    <meshStandardMaterial attach="material" color={'#6be092'} />
+                </mesh>
+            </>
             <Physics>
                 <Terrain />
             </Physics>
+
             <PerspectiveCamera
+                onUpdate={(camera) => {
+                    camera.lookAt(selfVector);
+                }}
                 makeDefault
-                position={[self.position.x, 2, self.position.y]}
+                position={[camera?.x, camera?.y, camera.z]}
                 fov={50}
-                zoom={5}
+                zoom={2}
             />
-            <OrbitControls
-                maxDistance={15}
-                enableZoom={true}
-                target={[self.position.x, 3, self.position.y]}
-            />
+            {/* {lightState && (
+                <OrbitControls
+                    maxDistance={25}
+                    enableZoom={true}
+                    target={[self.position.x, 1, self.position.y]}
+                    enableRotate={false}
+                />
+            )} */}
         </Suspense>
     );
 }
