@@ -10,7 +10,7 @@ const roomSlice = createSlice({
     name: 'roomState',
     initialState,
     reducers: {
-        setRooms: (state, action) => {
+        setRooms: (state, action: { payload: Room[] }) => {
             state.rooms = action.payload;
         },
         addRoom: (state, action: { payload: Room }) => {

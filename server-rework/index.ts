@@ -4,12 +4,13 @@ import {
     emitRoomToRoom,
     findRoomById,
     findRoomBySocketId,
+    handleSpectatorToggle,
     joinRoom,
     removePlayerFromRoom,
     socketIdIsHost,
-    toggleSpectator,
 } from './roomSystem';
 import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
+import { generateNewRooms, setRoom } from 'store';
 
 import { Socket } from 'socket.io';
 import { createServer } from 'socket/createServer';
@@ -44,9 +45,13 @@ const raiseTimer = () => {
 setInterval(raiseTimer, 500);
 
 const createRoom = require('./socket/createRoom');
+const toggleSpectator = require('./socket/toggleSpectator');
+const setDirection = require('./socket/setDirection');
 const onConnection = (socket: Socket) => {
     try {
         createRoom(io, socket);
+        toggleSpectator(io, socket);
+        setDirection(io, socket);
     } catch (error) {
         console.log(error);
     }
@@ -71,36 +76,6 @@ io.on('connect', (socket: any) => {
             rooms = newRooms;
             const sendData = { room: newRoom };
             emitRoomToRoom(newRoom.id, io);
-        } catch (error) {
-            console.log(error);
-        }
-    });
-
-    //Toggle spectator
-    socket.on('toggleSpectator', () => {
-        try {
-            const foundRoom = findRoomBySocketId(socket.id);
-            if (!foundRoom) return;
-            rooms = generateNewRooms(
-                rooms,
-                toggleSpectator(foundRoom, socket.id),
-            );
-            const sendData = { room: findRoomBySocketId(socket.id) };
-            emitRoomToRoom(foundRoom.id, io);
-        } catch (error) {
-            console.log(error);
-        }
-    });
-
-    //Changes direction of a player
-    socket.on('setDirection', (data: Data) => {
-        try {
-            const { roomId, keyDirection } = data;
-            console.log(keyDirection);
-            if (!roomId || !keyDirection) return;
-            rooms = setPlayerDirection(rooms, roomId, socket.id, keyDirection);
-            const sendData = { room: findRoomById(roomId) };
-            emitRoomToRoom(roomId, io);
         } catch (error) {
             console.log(error);
         }

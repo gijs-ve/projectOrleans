@@ -1,5 +1,5 @@
 import {
-    emitToRoom,
+    emitRoomToRoom,
     findRoomById,
     handleRoomStart,
     socketIdIsHost,
@@ -20,7 +20,7 @@ module.exports = (io: IO, socket: Socket) => {
             if (!socketIdIsHost(rooms, roomId, socket.id)) return;
             console.log(`User with ID ${socket.id} started room ${roomId}`);
             handleRoomStart(roomId);
-            emitToRoom(roomId, io);
+            emitRoomToRoom(roomId, io);
         } catch (error) {
             console.log(error);
         }
