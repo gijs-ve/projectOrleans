@@ -1,14 +1,12 @@
 import { Data, Room, Rooms } from '../types/types';
 //Functions
 import {
-    emitToRoom,
+    emitRoomToRoom,
     findRoomById,
     findRoomBySocketId,
-    generateNewRooms,
     joinRoom,
     removePlayerFromRoom,
     socketIdIsHost,
-    startRoom,
     toggleSpectator,
 } from './roomSystem';
 import { fillArena, getStartPositions, setPlayerDirection } from './gameSystem';
@@ -37,7 +35,7 @@ const raiseTimer = () => {
         rooms = onTick(rooms);
         rooms.map((i: Room) => {
             const sendData: Data = { room: i };
-            emitToRoom(rooms, i.id, sendData, io);
+            emitRoomToRoom(i.id, io);
         });
     } catch (error) {
         console.log(error);
@@ -72,26 +70,12 @@ io.on('connect', (socket: any) => {
             );
             rooms = newRooms;
             const sendData = { room: newRoom };
-            emitToRoom(rooms, newRoom.id, sendData, io);
+            emitRoomToRoom(newRoom.id, io);
         } catch (error) {
             console.log(error);
         }
     });
-    //Starts a room
-    socket.on('startRoom', (data: Data) => {
-        try {
-            const { roomId } = data;
-            if (!socketIdIsHost(rooms, roomId, socket.id)) return;
-            console.log(`User with ID ${socket.id} started room ${roomId}`);
-            const { startedRooms, startedRoom } = startRoom(rooms, roomId);
-            const { newRooms, newRoom } = fillArena(startedRooms, startedRoom);
-            rooms = generateNewRooms(newRooms, getStartPositions(newRoom));
-            const sendData = { room: findRoomById(roomId) };
-            emitToRoom(rooms, newRoom.id, sendData, io);
-        } catch (error) {
-            console.log(error);
-        }
-    });
+
     //Toggle spectator
     socket.on('toggleSpectator', () => {
         try {
@@ -102,7 +86,7 @@ io.on('connect', (socket: any) => {
                 toggleSpectator(foundRoom, socket.id),
             );
             const sendData = { room: findRoomBySocketId(socket.id) };
-            emitToRoom(rooms, foundRoom.id, sendData, io);
+            emitRoomToRoom(foundRoom.id, io);
         } catch (error) {
             console.log(error);
         }
@@ -116,7 +100,7 @@ io.on('connect', (socket: any) => {
             if (!roomId || !keyDirection) return;
             rooms = setPlayerDirection(rooms, roomId, socket.id, keyDirection);
             const sendData = { room: findRoomById(roomId) };
-            emitToRoom(rooms, roomId, sendData, io);
+            emitRoomToRoom(roomId, io);
         } catch (error) {
             console.log(error);
         }
@@ -142,7 +126,7 @@ io.on('connect', (socket: any) => {
                 return;
             }
             const sendData = { room: newRoom };
-            emitToRoom(rooms, newRoom.id, sendData, io);
+            emitRoomToRoom(newRoom.id, io);
         } catch (error) {
             console.log(error);
         }

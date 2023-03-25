@@ -1,5 +1,8 @@
+import { Room, Rooms } from '../../types/types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { Rooms, Room } from '../../types/types';
+
+import { generateNewRooms } from './generateNewRooms';
+
 const initialState: { rooms: Rooms } = {
     rooms: [],
 };
@@ -14,6 +17,21 @@ const roomSlice = createSlice({
             console.log('PAYLOAD', action.payload);
             state.rooms = [...state.rooms, action.payload];
         },
+        startRoom: (state, action: { payload: string }) => {
+            const { payload } = action;
+            const { rooms } = state;
+            const startedRoom = rooms.find((i: Room) => i.id === payload);
+            startedRoom.phase = 'Preparing';
+            startedRoom.timer = 5;
+            startedRoom.round = 1;
+            state.rooms = generateNewRooms(rooms, startedRoom);
+        },
+        setRoom: (state, action: { payload: Room }) => {
+            const { payload } = action;
+            const { rooms } = state;
+            const newRooms = generateNewRooms(rooms, payload);
+            state.rooms = newRooms;
+        },
     },
 });
 
@@ -22,6 +40,6 @@ const store = configureStore({
         roomState: roomSlice.reducer,
     },
 });
-
-export const { setRooms, addRoom } = roomSlice.actions;
+export * from './generateNewRooms';
+export const { setRooms, addRoom, startRoom, setRoom } = roomSlice.actions;
 export default store;
