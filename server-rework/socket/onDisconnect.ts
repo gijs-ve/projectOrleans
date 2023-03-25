@@ -1,8 +1,8 @@
-import { emitRoomToRoom, handlePlayerRemoval } from 'roomSystem';
-import store, { setRooms } from '../store';
+import { emitRoomToRoom, handlePlayerRemoval } from '../roomSystem';
 
 import { IO } from './createServer';
 import { Socket } from 'socket.io';
+import { setRooms } from '../store';
 
 module.exports = (io: IO, socket: Socket) => {
     const onDisconnect = (reason: string) => {

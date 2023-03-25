@@ -1,7 +1,4 @@
-import { Arena, Room, Rooms, Square } from '../../types/types';
-import store, { generateNewRooms } from '../store';
-
-import { findRoomById } from 'roomSystem';
+import { Arena, Room, Square } from '../../types/types';
 
 //Fills the arena at the start of a round
 export const fillArena = (room: Room): Room => {

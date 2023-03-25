@@ -1,10 +1,4 @@
-import {
-    emitRoomToRoom,
-    findRoomById,
-    handleRoomStart,
-    socketIdIsHost,
-} from 'roomSystem';
-import { fillArena, getStartPositions } from 'gameSystem';
+import { emitRoomToRoom, handleRoomStart, socketIdIsHost } from '../roomSystem';
 
 import { Data } from '../../types/types';
 import { IO } from './createServer';
@@ -13,7 +7,7 @@ import store from '../store';
 
 //Starts a room
 module.exports = (io: IO, socket: Socket) => {
-    const startRoom = (data: any) => {
+    const startRoom = (data: Data) => {
         try {
             const { roomId } = data;
             const { rooms } = store.getState().roomState;
