@@ -32,6 +32,7 @@ const setDirection = require('./socket/setDirection');
 const startRoom = require('./socket/startRoom');
 const toggleSpectator = require('./socket/toggleSpectator');
 const onDisconnect = require('./socket/onDisconnect');
+const __resetRoom = require('./socket/tests/__resetRoom');
 
 const onConnection = (socket: Socket) => {
     try {
@@ -42,6 +43,7 @@ const onConnection = (socket: Socket) => {
         startRoom(io, socket);
         toggleSpectator(io, socket);
         onDisconnect(io, socket);
+        __resetRoom(io, socket);
     } catch (error) {
         console.log(error);
     }

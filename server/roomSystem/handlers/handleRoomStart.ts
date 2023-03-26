@@ -13,6 +13,5 @@ export const handleRoomStart = (roomId: string) => {
         timer: 5,
         round: 1,
     };
-    console.log('STARTEDROOM HANDLEROOM START', startedRoom);
     store.dispatch(setRoom(calculateNewPositions(fillArena(startedRoom))));
 };

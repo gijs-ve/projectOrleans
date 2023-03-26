@@ -22,6 +22,9 @@ export const Keys = (props: { roomId: string }) => {
                         keyDirection: 'Right',
                     });
                     break;
+                case 'r':
+                    socket.emit('__resetRoom');
+                    break;
                 default:
                     break;
             }
