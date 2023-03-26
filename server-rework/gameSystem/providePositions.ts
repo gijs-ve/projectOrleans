@@ -1,4 +1,4 @@
-import { Players, Square } from '../../types/types';
+import { Player, Players, Square } from '../../types/types';
 import { arrayContainsSquare } from './arrayContainsSquare';
 import { calculateNeighbours } from './calculateNeighbours';
 import { getRandomDirection } from './getRandomDirection';
@@ -6,7 +6,9 @@ import { getRandomDirection } from './getRandomDirection';
 //takes a spawnTable and a playersTable, returns a new playersTable with spawn positions included
 export const providePositions = (spawnTable: Square[], players: Players) => {
     const playerCount = players.length;
-    const newPlayers = players;
+    const newPlayers = players.map((player: Player) => {
+        return player;
+    });
     let newSpawnTable = spawnTable;
     console.log('TEST1', newPlayers);
     for (let d = 0; d < playerCount; d++) {
