@@ -2,7 +2,7 @@ import { Player, Room, Rooms } from '../../types/types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 import { generateNewRooms } from './generateNewRooms';
-import { findRoomById, findRoomBySocketId } from 'roomSystem';
+import { findRoomById, findRoomBySocketId } from '../roomSystem';
 
 const initialState: { rooms: Rooms } = {
     rooms: [],

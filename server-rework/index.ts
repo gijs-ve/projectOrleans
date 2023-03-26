@@ -16,7 +16,7 @@ const PORT = 4000;
 const raiseTimer = () => {
     try {
         const { rooms } = store.getState().roomState;
-        setRooms(onTick(rooms));
+        store.dispatch(setRooms(onTick(rooms)));
         rooms.map((room: Room) => {
             emitRoomToRoom(room.id, io);
         });

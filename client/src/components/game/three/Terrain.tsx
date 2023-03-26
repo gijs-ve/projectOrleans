@@ -23,7 +23,7 @@ export function Terrain() {
 
     const aoMap = useLoader(
         TextureLoader,
-        process.env.PUBLIC_URL + '/textures/goei.jpeg',
+        process.env.PUBLIC_URL + '/textures/grid.png',
     );
 
     const alphaMap = useLoader(

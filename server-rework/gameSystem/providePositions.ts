@@ -6,25 +6,28 @@ import { getRandomDirection } from './getRandomDirection';
 //takes a spawnTable and a playersTable, returns a new playersTable with spawn positions included
 export const providePositions = (spawnTable: Square[], players: Players) => {
     const playerCount = players.length;
-    const newPlayers = players.map((player: Player) => {
+    let newPlayers = players.map((player: Player) => {
         return player;
     });
     let newSpawnTable = spawnTable;
-    console.log('TEST1', newPlayers);
     for (let d = 0; d < playerCount; d++) {
         const spawnPosition =
             newSpawnTable[Math.floor(Math.random() * newSpawnTable.length)];
         console.log('TEST2');
-        newPlayers[d].playerId = d;
-        newPlayers[d].position = spawnPosition;
-        newPlayers[d].isAlive = true;
-        console.log('TEST3');
-        newPlayers[d].direction = getRandomDirection();
-        console.log('TEST4');
+        newPlayers = players.map((player: Player, index: number) => {
+            if (index !== d) return;
+            return {
+                ...player,
+                playerId: d,
+                position: spawnPosition,
+                isAlive: true,
+                direction: getRandomDirection(),
+            };
+        });
         const surroundingArray = calculateNeighbours(spawnPosition);
-        newSpawnTable = newSpawnTable.filter((i: Square) => {
-            if (arrayContainsSquare(surroundingArray, i)) return false;
-            if (spawnPosition === i) return false;
+        newSpawnTable = newSpawnTable.filter((square: Square) => {
+            if (arrayContainsSquare(surroundingArray, square)) return false;
+            if (spawnPosition === square) return false;
             return true;
         });
     }
