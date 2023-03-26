@@ -1,48 +1,54 @@
-import { Arena, Player, Room, Rooms } from '../../types/types';
-
+import { Room, Rooms, Player, Arena } from '../../types/types';
 import { getNextSquare } from './getNextSquare';
 import { squareIsSolid } from './squareIsSolid';
 
 //Handles events that occur every tick
 export const onTick = (rooms: Rooms): Rooms => {
-    return rooms.map((i: Room) => {
-        switch (i.phase) {
+    return rooms.map((room: Room) => {
+        switch (room.phase) {
             case 'PreGame':
-                return i;
+                return room;
             case 'Preparing':
-                if (i.timer >= 1) return { ...i, timer: i.timer - 1 };
-                if (i.timer <= 0)
-                    return { ...i, phase: 'InGame', timer: i.timelineTime };
+                if (room.timer >= 1) return { ...room, timer: room.timer - 1 };
+                if (room.timer <= 0)
+                    return {
+                        ...room,
+                        phase: 'InGame',
+                        timer: room.timelineTime,
+                    };
             case 'InGame':
-                if (i.timer >= 0) {
-                    let filledSquares: Arena = i.filledSquares;
-                    const newPlayers = i.players.map((j: Player) => {
-                        if (j.isSpectator) return j;
-                        if (!j.isAlive) return j;
+                if (room.timer >= 0) {
+                    let filledSquares: Arena = room.filledSquares;
+                    const newPlayers = room.players.map((player: Player) => {
+                        if (player.isSpectator) return player;
+                        if (!player.isAlive) return player;
                         filledSquares = [
                             ...filledSquares,
-                            { ...j.position, playerId: j.playerId },
+                            { ...player.position, playerId: player.playerId },
                         ];
                         if (
                             !squareIsSolid(
-                                getNextSquare(j),
-                                i.size,
-                                i.filledSquares,
+                                getNextSquare(player),
+                                room.size,
+                                room.filledSquares,
                             )
                         ) {
-                            return { ...j, position: getNextSquare(j) };
+                            return {
+                                ...player,
+                                position: getNextSquare(player),
+                            };
                         }
-                        return { ...j, isAlive: false };
+                        return { ...player, isAlive: false };
                     });
                     return {
-                        ...i,
+                        ...room,
                         players: newPlayers,
-                        timer: i.timer - 1,
+                        timer: room.timer - 1,
                         filledSquares: filledSquares,
                     };
                 }
             default:
-                return i;
+                return room;
         }
     });
 };

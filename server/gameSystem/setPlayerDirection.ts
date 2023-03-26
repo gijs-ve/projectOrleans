@@ -1,59 +1,64 @@
-import { KeyDirection, Player, Rooms, Room } from '../../types/types';
+import { KeyDirection, Player, Room, Rooms } from '../../types/types';
+import store, { setRooms } from '../store';
 
 export const setPlayerDirection = (
-    rooms: Rooms,
     roomId: string,
     socketId: string,
     keyDirection: KeyDirection,
-) => {
-    return rooms.map((i: Room) => {
-        if (i.id !== roomId) return i;
-        return {
-            ...i,
-            players: i.players.map((i: Player) => {
-                if (i.id !== socketId) return i;
-                let newDirection = null;
-                switch (keyDirection) {
-                    case 'Left':
-                        switch (i.direction) {
-                            case 'Up':
-                                newDirection = 'Left';
+): void => {
+    const { rooms } = store.getState().roomState;
+    store.dispatch(
+        setRooms(
+            rooms.map((room: Room) => {
+                if (room.id !== roomId) return room;
+                return {
+                    ...room,
+                    players: room.players.map((player: Player) => {
+                        if (player.id !== socketId) return player;
+                        let newDirection = null;
+                        switch (keyDirection) {
+                            case 'Left':
+                                switch (player.direction) {
+                                    case 'Up':
+                                        newDirection = 'Left';
+                                        break;
+                                    case 'Right':
+                                        newDirection = 'Up';
+                                        break;
+                                    case 'Down':
+                                        newDirection = 'Right';
+                                        break;
+                                    case 'Left':
+                                        newDirection = 'Down';
+                                        break;
+                                    default:
+                                        break;
+                                }
                                 break;
                             case 'Right':
-                                newDirection = 'Up';
-                                break;
-                            case 'Down':
-                                newDirection = 'Right';
-                                break;
-                            case 'Left':
-                                newDirection = 'Down';
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 'Right':
-                        switch (i.direction) {
-                            case 'Up':
-                                newDirection = 'Right';
-                                break;
-                            case 'Right':
-                                newDirection = 'Down';
-                                break;
-                            case 'Down':
-                                newDirection = 'Left';
-                                break;
-                            case 'Left':
-                                newDirection = 'Up';
-                                break;
-                            default:
+                                switch (player.direction) {
+                                    case 'Up':
+                                        newDirection = 'Right';
+                                        break;
+                                    case 'Right':
+                                        newDirection = 'Down';
+                                        break;
+                                    case 'Down':
+                                        newDirection = 'Left';
+                                        break;
+                                    case 'Left':
+                                        newDirection = 'Up';
+                                        break;
+                                    default:
+                                        break;
+                                }
                                 break;
                         }
-                        break;
-                }
-                if (!newDirection) return i;
-                return { ...i, direction: newDirection };
+                        if (!newDirection) return player;
+                        return { ...player, direction: newDirection };
+                    }),
+                };
             }),
-        };
-    });
+        ),
+    );
 };
