@@ -4,7 +4,7 @@ import { calculateNeighbours } from './calculateNeighbours';
 import { getRandomDirection } from './getRandomDirection';
 
 //takes a spawnTable and a playersTable, returns a new playersTable with spawn positions included
-export const providePositions = (spawnTable: Square[], players: Players) => {
+export const getSpawnPosition = (spawnTable: Square[], players: Players) => {
     const playerCount = players.length;
     let newPlayers = players.map((player: Player) => {
         return player;
@@ -13,9 +13,10 @@ export const providePositions = (spawnTable: Square[], players: Players) => {
     for (let d = 0; d < playerCount; d++) {
         const spawnPosition =
             newSpawnTable[Math.floor(Math.random() * newSpawnTable.length)];
-        console.log('TEST2');
-        newPlayers = players.map((player: Player, index: number) => {
-            if (index !== d) return;
+        newPlayers = newPlayers.map((player: Player, index: number) => {
+            console.log('d', d);
+            console.log('index', index);
+            if (index !== d) return player;
             return {
                 ...player,
                 playerId: d,
@@ -24,6 +25,7 @@ export const providePositions = (spawnTable: Square[], players: Players) => {
                 direction: getRandomDirection(),
             };
         });
+        console.log(`NEWPLAYERS AT ${d}`, newPlayers);
         const surroundingArray = calculateNeighbours(spawnPosition);
         newSpawnTable = newSpawnTable.filter((square: Square) => {
             if (arrayContainsSquare(surroundingArray, square)) return false;

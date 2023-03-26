@@ -23,7 +23,7 @@ export const handleRoomCreation = (hostName: string, hostId: string): void => {
         round: 0,
         maxRounds: 0,
         timelines: 3,
-        timelineTime: 30,
+        timelineTime: 20000,
         size: 25,
     };
     store.dispatch(addRoom(room));

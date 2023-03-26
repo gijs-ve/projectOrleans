@@ -16,8 +16,12 @@ export const handlePlayerJoin = (
         isAlive: false,
         isSpectator: false,
     };
-    const room = rooms.find((i: Room) => i.id === roomId);
+    console.log('newPlayer', newPlayer);
+    const room = rooms.find((room: Room) => room.id === roomId);
+    console.log('room', room);
     const newPlayers = [...room.players, newPlayer];
+    console.log('room', newPlayers);
     const newRoom = { ...room, players: newPlayers };
+
     store.dispatch(setRoom(newRoom));
 };
