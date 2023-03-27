@@ -60,7 +60,6 @@ export function Terrain() {
         if (!coinPosition) return;
         const onKeyPress = (e: any) => {
             if (!e.key) return;
-            console.log(e.key);
             switch (e.key) {
                 case 'w':
                     setCoinPosition({

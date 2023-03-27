@@ -10,7 +10,6 @@ export const Keys = (props: { roomId: string }) => {
             if (!e.key) return;
             switch (e.key) {
                 case 'a':
-                    console.log('LEFT');
                     socket.emit('setDirection', {
                         roomId,
                         keyDirection: 'Left',
