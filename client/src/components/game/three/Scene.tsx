@@ -10,6 +10,7 @@ import { getBorder, getSelf } from '../functions';
 import { BorderEntity } from './Entities/BorderEntity';
 import { Box } from '@react-three/drei';
 import { Physics } from '@react-three/cannon';
+import { DirectionArrowEntity } from './Entities/DirectionArrowEntity';
 import { PlayerEntity } from './Entities/PlayerEntity';
 import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
@@ -39,9 +40,16 @@ const Players = (p: { game: Game }) => {
         if (!square) return { x: 0, y: 0, z: 0, color: 'none' };
         return { x: square.x, y: 2, z: square.y, color: square.playerId };
     });
-
+    console.log(playerBoxes);
     return (
         <>
+            {playerBoxes.map((player: any) => {
+                return (
+                    <DirectionArrowEntity
+                        pos={{ x: player.x, y: 2, z: player.y }}
+                    />
+                );
+            })}
             {boxPositionArray.map((pos: any) => {
                 let color = 'white';
                 switch (pos.color) {
@@ -67,7 +75,11 @@ const Players = (p: { game: Game }) => {
                         color = 'gold';
                         break;
                 }
-                return <PlayerEntity color={color} pos={pos} />;
+                return (
+                    <>
+                        <PlayerEntity color={color} pos={pos} />
+                    </>
+                );
             })}
         </>
     );
@@ -101,7 +113,6 @@ export function Scene() {
     useEffect(() => {
         const onKeyPress = (e: any) => {
             if (!e.key) return;
-            console.log(e.key);
             switch (e.key) {
                 case 'e':
                     switchCameraState(!cameraState);
@@ -120,9 +131,7 @@ export function Scene() {
 
     if (!self || !self.position) return <></>;
     if (!game) return <></>;
-    console.log('SELF', self);
     const camera = getCamera(self, cameraState);
-    console.log('CAMERA', camera);
     if (!camera) return <></>;
     const selfVector = new Vector3(self.position.x, 1, self.position.y);
     return (
