@@ -9,7 +9,7 @@ import { onTick } from './gameSystem/onTick';
 
 // HTTP Server setup
 const { server, io } = createServer();
-
+const cors = require('cors');
 const PORT = 4000;
 
 //Timer to keep track in all rooms
