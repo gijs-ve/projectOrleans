@@ -6,6 +6,7 @@ export const PlayerEntity = (props: { color: string; pos: Position }) => {
     return (
         <Box
             castShadow
+            receiveShadow
             material-color={color}
             position={[pos.x, pos.y, pos.z]}
         />

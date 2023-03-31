@@ -155,7 +155,7 @@ export function Scene() {
             {/* <directionalLight
                 castShadow={true}
                 color={'#4FAB3A'}
-                position={[0, 20, 100]}
+                position={[20, 20, 100]}
                 intensity={2}
             /> */}
             {/* <AmbientLight color={'#4FAB3A'} pos={{ x: 0, y: 15, z: 0 }} /> */}
@@ -165,13 +165,22 @@ export function Scene() {
                 intensity={0.3}
             /> */}
             <spotLight
+                castShadow={true}
                 color={'#4FAB3A'}
-                intensity={1}
-                position={[0, 300, 0]}
+                intensity={0.5}
+                position={[30, 15, 20]}
                 distance={30}
                 angle={Math.PI * 0.5}
                 penumbra={0.25}
-                decay={12}
+                decay={4}
+                shadow-mapSize-width={2048}
+                shadow-mapSize-height={2048}
+                shadow-camera-far={50}
+                shadow-camera-left={-10}
+                shadow-camera-right={10}
+                shadow-camera-top={10}
+                shadow-camera-bottom={-10}
+                shadow-bias={-0.0005}
             />
             <Physics>
                 <Terrain />
