@@ -39,7 +39,7 @@ export function InGame(p: GameProp) {
     return (
         <>
             <Keys roomId={game.id} />
-            <Canvas>
+            <Canvas shadows>
                 <Scene />
             </Canvas>
         </>

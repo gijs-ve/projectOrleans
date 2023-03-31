@@ -85,6 +85,7 @@ export function Terrain() {
     return (
         <>
             <mesh
+                receiveShadow
                 ref={meshRef2}
                 position={[0, 0, 0]}
                 rotation-x={-Math.PI * 0.5}
@@ -98,7 +99,7 @@ export function Terrain() {
                 />
             </mesh>
 
-            <mesh ref={meshRef} position={[0, 0, 0]}>
+            <mesh receiveShadow ref={meshRef} position={[0, 0, 0]}>
                 <boxGeometry args={[100, 2, 100]} />
                 <MeshReflectorMaterial
                     transparent={true}
@@ -108,7 +109,7 @@ export function Terrain() {
                     roughness={0.4}
                     dithering={true}
                     blur={[1024, 512]} // Blur ground reflections (width, heigt), 0 skips blur
-                    mixBlur={3} // How much blur mixes with surface roughness (default = 1)
+                    mixBlur={1} // How much blur mixes with surface roughness (default = 1)
                     mixStrength={12} // Strength of the reflections
                     mixContrast={1} // Contrast of the reflections
                     resolution={1024} // Off-buffer resolution, lower=faster, higher=better quality, slower

@@ -7,10 +7,11 @@ import { Game, Player, Square } from '../../../../../types/types';
 import { Suspense, useContext, useEffect, useRef, useState } from 'react';
 import { getBorder, getSelf } from '../functions';
 
+import { AmbientLight } from './Lights/AmbientLight';
 import { BorderEntity } from './Entities/BorderEntity';
 import { Box } from '@react-three/drei';
-import { Physics } from '@react-three/cannon';
 import { DirectionArrowEntity } from './Entities/DirectionArrowEntity';
+import { Physics } from '@react-three/cannon';
 import { PlayerEntity } from './Entities/PlayerEntity';
 import { SocketContext } from '../../../socket/socket';
 import { Terrain } from './Terrain';
@@ -43,9 +44,10 @@ const Players = (p: { game: Game }) => {
     console.log(playerBoxes);
     return (
         <>
-            {playerBoxes.map((player: any) => {
+            {playerBoxes.map((player: any, index) => {
                 return (
                     <DirectionArrowEntity
+                        key={player.playerId}
                         pos={{ x: player.x, y: 2, z: player.y }}
                     />
                 );
@@ -144,12 +146,33 @@ export function Scene() {
             <Players game={game} />
 
             <>
-                <directionalLight castShadow={true} position={[0, 222, 555]} />
-                <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
+                {/* <directionalLight castShadow={true} position={[0, 222, 555]} /> */}
+                {/* <mesh position={[0, 222, 555]} rotation={[0, 5, 0]}>
                     <boxGeometry attach="geometry" args={[1, 1, 1]} />
                     <meshStandardMaterial attach="material" color={'#6be092'} />
-                </mesh>
+                </mesh> */}
             </>
+            {/* <directionalLight
+                castShadow={true}
+                color={'#4FAB3A'}
+                position={[0, 20, 100]}
+                intensity={2}
+            /> */}
+            {/* <AmbientLight color={'#4FAB3A'} pos={{ x: 0, y: 15, z: 0 }} /> */}
+            {/* <hemisphereLight
+                color={'#FF0000'}
+                groundColor={'#4FAB3A'}
+                intensity={0.3}
+            /> */}
+            <spotLight
+                color={'#4FAB3A'}
+                intensity={1}
+                position={[0, 300, 0]}
+                distance={30}
+                angle={Math.PI * 0.5}
+                penumbra={0.25}
+                decay={12}
+            />
             <Physics>
                 <Terrain />
             </Physics>
@@ -163,13 +186,14 @@ export function Scene() {
                 fov={50}
                 zoom={2}
             />
+            <OrbitControls
+                maxDistance={300}
+                enableZoom={true}
+                target={[self.position.x, 1, self.position.y]}
+                enableRotate={true}
+            />
             {/* {lightState && (
-                <OrbitControls
-                    maxDistance={25}
-                    enableZoom={true}
-                    target={[self.position.x, 1, self.position.y]}
-                    enableRotate={false}
-                />
+               
             )} */}
         </Suspense>
     );

@@ -3,5 +3,11 @@ import { Position } from '../Scene';
 
 export const PlayerEntity = (props: { color: string; pos: Position }) => {
     const { color, pos } = props;
-    return <Box material-color={color} position={[pos.x, pos.y, pos.z]} />;
+    return (
+        <Box
+            castShadow
+            material-color={color}
+            position={[pos.x, pos.y, pos.z]}
+        />
+    );
 };
